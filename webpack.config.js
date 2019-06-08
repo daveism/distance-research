@@ -11,8 +11,10 @@ const paths = {
     SRC_HTML: path.resolve(__dirname, 'src')
 };
 
-
 module.exports = {
+    node: {
+        fs: "empty"
+      },
     mode: 'development',
     entry: {
         index: ['babel-polyfill', path.join(paths.SRC, 'index.js')],

@@ -26,13 +26,21 @@
 </head>
 <body class="w-100 h-100">
 
-
   <div class="w-100 h-100 d-flex justify-content-center" id="main-content">
-    <div class="w-75 h-75 align-self-center" id="map-holder">
-      <div id="map" ref="mapContainer" class="map"></div>
+    <div class="row w-100 h-100">
+      <div class="col-4 h-75 align-self-center" id="map-action-holder">
+        <div class="py-3 align-self-end" >
+          <div id='geocoder' class='geocoder'></div>
+        </div>
+        <button type="button" class="btn btn-light btn-draw-circle w-100 align-self-end">
+          <i class="far fa-dot-circle"></i>
+          Draw a Circle
+        </button>
+      </div>
+      <div class="col-8 h-75 align-self-center" id="map-holder">
+        <div id="map" ref="mapContainer" class="map"></div>
+      </div>
     </div>
-
-
   </div>
 
 </body>
