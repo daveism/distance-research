@@ -59,3 +59,12 @@ typings/
 
 # next.js build output
 .next
+
+package-lock.json
+package-lockd.json
+
+# Emacs temp files
+*~
+
+# MAC icon directories
+.DS_Store
