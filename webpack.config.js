@@ -17,7 +17,7 @@ module.exports = {
     entry: {
         index: ['babel-polyfill', path.join(paths.SRC, 'index.js')],
         bootstrap: path.join(paths.SRC, 'bootstrap.js'),
-        // store: path.join(paths.SRC, 'store.js'),
+        store: path.join(paths.SRC, 'store.js'),
     },
     output: {
         path: paths.DIST,
