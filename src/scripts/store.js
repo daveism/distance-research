@@ -24,10 +24,9 @@ export class Store {
     if (Store.storageAvailable()) {
       this.storage = window.localStorage;
       this.state = {};
-      if(this.checkStateExists){
+      if (this.checkStateExists) {
         this.state = this.getState();
       } else {
-        const state = {};
         this.state = { STATE_KEY };
       }
     }
@@ -136,6 +135,6 @@ export class Store {
         e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
         // acknowledge QuotaExceededError only if there's something already stored
         storage.length !== 0;
-      }
     }
   }
+}
