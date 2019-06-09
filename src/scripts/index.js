@@ -17,6 +17,13 @@ const store = new Store({});
 library.add(fas, far);
 dom.watch();
 
+const urlString = window.location.href;
+const url = new URL(urlString);
+const userType = url.searchParams.get('userType');
+
+// ga event action, category, label
+googleAnalyticsEvent('data', 'userType', userType);
+
 mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2ZWlzbSIsImEiOiJCdjUxT0FzIn0.V9oIk_wUc4uZu7UBblR8mw';
 
 const map = new mapboxgl.Map({
@@ -169,6 +176,7 @@ geocoder.on('result', (e) => {
   const max = 14;
   const zm = Math.floor(Math.random() * (max - min + 1) + min);
   map.fitBounds(bbox, { maxZoom: zm });
+
   // ga event action, category, label
   googleAnalyticsEvent('data', 'searchzoom', zm);
 
