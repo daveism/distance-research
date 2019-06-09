@@ -1,137 +1,91 @@
-import { StorageAPI } from './localStorageAPI';
+// import { StorageAPI } from './localStorageAPI';
 
 /**
- * This component is intended to handle the storage and retrieval of the state of
- * the NFWF application. As of this writing it is using localStorage to do this.
- * Uses simple class instance methods with the short-hand method declaration
- * pattern.
- *
- * To note: There is a difference between the Store and the State. As of 0a3106e
- * the Store is a String saved to the browsers localStorage and is a serialized
- * version of the State. The State is an Object which is interacted with by
- * parsing the State string from the Store, modifying the results of the parse,
- * and re-serializing it back to the Store.
- */
+* This component is intended to handle the storage and retrieval of the state of
+* As of this writing it is using localStorage to do this.
+* Uses simple class instance methods with the short-hand method declaration
+* pattern.
+*
+* To note: There is a difference between the Store and the State. As of 0a3106e
+* the Store is a String saved to the browsers localStorage and is a serialized
+* version of the State. The State is an Object which is interacted with by
+* parsing the State string from the Store, modifying the results of the parse,
+* and re-serializing it back to the Store.
+*/
+const STATE_KEY = 'state';
+
 export class Store {
   // ..and an (optional) custom class constructor. If one is
   // not supplied, a default constructor is used instead:
   // constructor() { }
   constructor() {
     // this.state = state;
-    this.store = new StorageAPI();
-
-    // this.state = {};
-    // if(this.isStateExists){
-    //   this.state = this.getState();
-    // } else {
-    //   const state = {};
-    //   this.state = {state};
-    // }
+    // this.store = new StorageAPI();
+    if (Store.storageAvailable()) {
+      this.storage = window.localStorage;
+      this.state = {};
+      if(this.checkStateExists){
+        this.state = this.getState();
+      } else {
+        const state = {};
+        this.state = { STATE_KEY };
+      }
+    }
   }
 
-  // // GETTERS
-
-  // As of 0a3106e this is probably intended to be used as a getter for the
-  // Store. However it is pulling an unused and undeclared variable _state so it
-  // probably just returns undefined.
-  get Store() {
-    return this._state;
-  }
-
-  // Gets an individual top level item from the state
+  // Sets a key/value pair to the storage provider, primarily used later in the composed functions
   //
-  // @param item - string
-  // @return string || object
-  getStateItem(item) {
-    return this.checkItem(item) ? this.getState()[item] : {};
+  // @param key | string
+  // @param value | string
+  setStateItem(key = '', value = '') {
+    const storeObj = { [key]: value };
+    const newStateObj = { ...this.getState(), ...storeObj };
+    this.setState(newStateObj);
   }
 
   // Gets the entire state object
   //
   // @return object
   getState() {
-    return this.store.getState();
+    return this.checkStateExists() ? JSON.parse(this.getItem(STATE_KEY)) : {};
   }
 
-  // // SETTERS
-
-  // Setter for the state to the Store, preserving any non-overwritten
-  // properties in the Store.
+  // Gets an item from the storage provider, primarily used later in the composed functions
   //
-  // @param state - object
-  saveState(state) {
-    const currentState = this.getState();
-    const newState = { ...currentState, ...state };
-    this.store.setState(newState);
+  // @param key | string
+  // @return string
+  getItem(key = '') {
+    return this.storage.getItem(STATE_KEY);
   }
 
-  // Setter for the state to the Store, overriding any non-overwritten
-  // properties in the Store.
+  // G
+  // Gets an item from the storage provider, primarily used later in the composed functions
   //
-  // @param state - object
-  saveNewState(state) {
-    this.store.setState(state);
+  // @param key | string
+  // @return string
+  getStateItem(key = '') {
+    return this.checkItem(key) ? this.getState()[key] : {};
+    // this.storage.getItem(key);
   }
 
-  // Setter which overrides the entire Store with a new State object.
+  // Sets a new state object state
   //
-  // @param StateObject - object
-  setStateFromObject(StateObject) {
-    this.saveNewState(StateObject);
+  // @param value | string
+  setState(value = {}) {
+    this.storage.setItem(STATE_KEY, JSON.stringify(value));
   }
 
-  // Setter for a key value pair to the State, which means that it writes it to
-  // the Store.
+
+  // Checks if the state exists in the storage provider
+  checkStateExists() {
+    return Boolean(this.getItem(STATE_KEY));
+  }
+
+  // Gets the state from the storage provider
   //
-  // @param key - string
-  // @param value - string
-  addStateItem(key, value) {
-    const state = this.getState();
-    state[key] = value;
-    this.saveNewState(state);
-  }
-
-  // Setter for a key value pair to the Store.
-  //
-  // @param key - string
-  // @param value - string
-  setStateItem(key, value) {
-    const storeObj = { [key]: value };
-    const newStateObj = { ...this.getState(), ...storeObj };
-    this.saveNewState(newStateObj);
-  }
-
-  // // REMOVERS
-
-  // Removes the entire state from the browser.
-  clearState() {
-    this.store.removeState();
-  }
-
-  // Removes a key value pair from the State and the Store.
-  //
-  // @param key - string
-  removeStateItem(key) {
-    const currentState = this.getState();
-    delete currentState[key];
-    this.saveNewState(currentState);
-  }
-
-  // // UTILITIES
-
-  // Check if localStorage available.
-  // Taken from https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
-  //
-  // @return boolean
-  static storageAvailable() {
-    return StorageAPI.storageAvailable();
-  }
-
-  // Check if the state has been saved to the browser store
-  //
-  // @return boolean
-  isStateExists() {
-    return this.store.checkStateExists();
+  // @return string
+  getStateAsString() {
+    return this.getItem(STATE_KEY);
   }
 
   // Check if an item has been saved to the store
@@ -140,8 +94,8 @@ export class Store {
   // @param item - string
   // @return boolean
   isStateItemExist(item) {
-    if (this.isStateExists()) {
-      const stateStr = this.store.getStateAsString();
+    if (this.checkStateExists()) {
+      const stateStr = this.getStateAsString();
       if (stateStr.indexOf(item) > 0) {
         return true;
       }
@@ -149,28 +103,39 @@ export class Store {
     return false;
   }
 
-  // Also checks if an item has been saved to the store
-  // TODO: Rewrite the indexOf check to parse the deeply nested keys of an object since the current
-  // code will give an error in some edge cases. EX:
-  //
-  // this.store.setStateAsString('{foo:"bar",bars:"baz"}');
-  // checkItem('bar'); // returns TRUE ();
   //
   // @param item - string
   // @return boolean
   checkItem(item) {
-    return this.isStateExists() && this.store.getStateAsString().indexOf(item) > 0;
+    return this.checkStateExists() && this.getStateAsString().indexOf(item) > 0;
   }
 
-  //  const ele.addEventListener('click', (e) => {
-  //    this.setStateFromObject();
-  //  })
-
-  // We will look at static and subclassed methods shortly
-
-  // save map action.
-  // ensures the state map action is consistent
-  saveAction(type) {
-    this.setStateItem('lastaction', type);
+  // Check if localStorage available.
+  // Taken from https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
+  //
+  // @return boolean
+  static storageAvailable() {
+    const type = 'localStorage';
+    let storage;
+    try {
+      storage = window[type];
+      const x = '__storage_test__';
+      storage.setItem(x, x);
+      storage.removeItem(x);
+      return true;
+    } catch (e) {
+      return e instanceof DOMException && (
+        // everything except Firefox
+        e.code === 22 ||
+        // Firefox
+        e.code === 1014 ||
+        // test name field too, because code might not be present
+        // everything except Firefox
+        e.name === 'QuotaExceededError' ||
+        // Firefox
+        e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+        // acknowledge QuotaExceededError only if there's something already stored
+        storage.length !== 0;
+      }
+    }
   }
-}

@@ -10,10 +10,39 @@
   @include border-radius($default-control-height, $default-control-height);
   &:focus {
     outline: none !important;
-    border: unset !important;
+    border-width: 0px !important;
+    box-shadow: unset !important;
+  }
+  &:hover {
+    background-color: darken($body-color, 20) !important;
   }
   &.disabled {
     background-color: darken($body-color, 20) !important;
+  }
+}
+
+.btn-aggreement {
+  // width: 200px !important;
+  min-width: 100px !important;
+}
+
+.btn-xlight {
+  $xlight: darken($body-background-color, 20);
+  background-color: $xlight !important;
+  color: $body-color !important;
+  height: $default-control-height !important;
+  @include border-radius($default-control-height, $default-control-height);
+  &:focus {
+    outline: none !important;
+    border-width: 0px !important;
+    box-shadow: unset !important;
+  }
+  &:hover {
+    background-color: lighten($xlight, 10) !important;
+    // color: darken($body-background-color, 20) !important;
+  }
+  &.disabled {
+    background-color: lighten($xlight, 10) !important;
   }
 }
 
@@ -22,7 +51,8 @@
   text-align: start !important;
   &:focus {
     outline: none !important;
-    border: unset !important;
+    border-width: 0px !important;
+    box-shadow: unset !important;
   }
 }
 
@@ -55,6 +85,7 @@
   &:focus {
     outline: none !important;
     border: unset !important;
+    box-shadow: unset !important;
   }
 }
 

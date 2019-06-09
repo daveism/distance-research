@@ -8,14 +8,66 @@ import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { Store } from './store';
 import RadiusMode from './radiusMode';
 import drawStyles from './drawstyles';
+import { googleAnalyticsEvent } from './ga';
+
+const store = new Store({});
+
+// check study session state for completetion
+const isStudycompleted = store.getStateItem('studycompleted')
+let studyCompleted = false;
+if (typeof isStudycompleted === "boolean") {
+  studyCompleted = isStudycompleted;
+} else {
+  studyCompleted = false;
+}
+
+// check study session state for completetion
+const StudyAgrreement = store.getStateItem('study-agreement')
+let studyAgrreed = false;
+if (typeof StudyAgrreement === "boolean") {
+  studyAgrreed = StudyAgrreement;
+} else {
+  studyAgrreed = false;
+}
+
+// already agreed
+if (studyAgrreed ) {
+  // handleAgreeClick();
+}
+
+
+// hide study
+if (studyCompleted ) { // || studyAgrreed
+  handleAgreeClick();
+  document.getElementById('study-complete').classList.remove('d-none');
+  document.getElementById('study-progress').remove();
+} else {
+  // document.getElementById('study-progress').classList.remove('d-none');
+  store.setStateItem('studycompleted', false);
+}
+
+// ensure the object or variable is valid...
+// @param obj - typeless
+export function checkValidObject(obj) {
+  if (obj === undefined || obj === null) { return false; }
+  if (typeof obj === 'object' && Object.keys(obj).length === 0) { return false; }
+  if (typeof obj === 'string' && obj.length === 0) { return false; }
+
+  return true;
+}
+
+export function uuid() {
+  return crypto.getRandomValues(new Uint32Array(4)).join('-');
+}
+
+if (!checkValidObject(store.getStateItem('uuid'))) {
+  store.setStateItem('uuid', uuid());
+}
 
 // Kicks off the process of finding <i> tags and replacing with <svg>
 // addes support for fontawesome
 library.add(fas, far);
 dom.watch();
-
-const store = new Store({});
-store.setStateItem('daveism', '{test:true}');
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2ZWlzbSIsImEiOiJCdjUxT0FzIn0.V9oIk_wUc4uZu7UBblR8mw';
 
@@ -42,6 +94,10 @@ const geocoder = new MapboxGeocoder({
 geocoder.on('result', (e) => {
   const x = e.result.center[0];
   const y = e.result.center[1];
+
+  // ga event action, category, label
+  googleAnalyticsEvent('data', 'searchpoint', `${x}, ${y}`);
+
   const offsetdist = 0.0025;
   const bbox = [[x - offsetdist, y - offsetdist], [x + offsetdist, y + offsetdist]];
 
@@ -50,6 +106,9 @@ geocoder.on('result', (e) => {
   const max = 14;
   const zm = Math.floor(Math.random()*(max-min+1)+min);
   map.fitBounds(bbox, { maxZoom: zm });
+  // ga event action, category, label
+  googleAnalyticsEvent('data', 'searchzoom', zm);
+
 
   const circleButtonElem = document.getElementById('circle-button');
   if (circleButtonElem.classList.contains('disabled')) {
@@ -123,6 +182,9 @@ const messageIndexOne = Math.floor(Math.random()*(maxOne-minOne+1)+minOne);
 const stepDirections1 = document.getElementById('step1-directions');
 stepDirections1.innerHTML = directionsOne[messageIndexOne];
 
+// ga event action, category, label
+googleAnalyticsEvent('data', 'step1text', directionsOne[messageIndexOne]);
+
 const  directionsTwo = [
   'Draw a circle that represents 1 mile from the location.',
   'Draw a circle that represents a 5 minute <strong>DRIVE</strong>.',
@@ -133,15 +195,28 @@ const minTwo = 0;
 const maxTwo = 2;
 const messageIndexTwo = Math.floor(Math.random()*(maxTwo-minTwo+1)+minTwo);
 const stepDirections2 = document.getElementById('step2-directions');
-console.log(directionsTwo[messageIndexTwo])
 stepDirections2.innerHTML = directionsTwo[messageIndexTwo];
 
-// adds a custom google events
-function googleAnalyticsEvent(action = '', category = '', label = '', value = 0) {
-  gtag('event', action, {
-    event_category: category,
-    event_label: label,
-    value: `${value}`,
-    uuid: store.getStateItem('uuid')
-  });
+// ga event action, category, label
+googleAnalyticsEvent('data', 'step2text', directionsTwo[messageIndexTwo]);
+
+function handleAgreeClick() {
+  document.getElementById('study-progress').classList.remove('d-none');
+  document.getElementById('study-agreement-all').classList.add('d-none');
+  document.getElementById('study-dissaggree').remove();
+  store.setStateItem('study-agreement', true);
 }
+
+function handleDissagreeClick() {
+  document.getElementById('study-progress').classList.remove('d-none');
+  document.getElementById('study-dissaggree').classList.remove('d-none');
+  document.getElementById('study-agreement-all').classList.add('d-none');
+  document.getElementById('study-progress').remove();
+  store.setStateItem('study-agreement', false);
+}
+
+const aggreeButtonElement = document.getElementById('aggree-button');
+aggreeButtonElement.addEventListener('click', handleAgreeClick);
+
+const dissaggreeButtonElement = document.getElementById('diaggree-button');
+dissaggreeButtonElement.addEventListener('click', handleDissagreeClick);

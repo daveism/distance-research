@@ -43,3 +43,38 @@ html, body {
     color: darken($body-color, 20) !important;
   }
 }
+
+#study-agreement {
+  overflow-y: auto !important;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  border: 1px solid $body-color;
+  background-color: $body-background-color;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: darken($body-color, 40);
+  border-radius: 8px;
+  -webkit-border-radius: 6px !important;
+  -moz-border-radius: 6px !important;
+  &:vertical {
+    height: 8px;
+  }
+}
+
+::-webkit-scrollbar-track {
+  border: 1px solid $body-color;
+  background-color: $body-background-color;
+}
+
+::-webkit-scrollbar-track-piece {
+  margin-right: 10px;
+  height: 8px;
+  width: 8px;
+}
+
+::-webkit-scrollbar-corner {
+  display: none;
+}
