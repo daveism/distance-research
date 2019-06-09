@@ -6,7 +6,7 @@ import mapboxgl from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { Store } from './store';
-import RadiusMode from './radius-mode';
+import RadiusMode from './radiusMode';
 import drawStyles from './drawstyles';
 
 // Kicks off the process of finding <i> tags and replacing with <svg>
@@ -77,7 +77,6 @@ const drawControl = new MapboxDraw({
     draw_radius: RadiusMode
   }, MapboxDraw.modes)
 });
-
 
 map.addControl(drawControl);
 
