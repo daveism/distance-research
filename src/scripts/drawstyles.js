@@ -8,13 +8,13 @@ export default [
     filter: ['all', ['==', '$type', 'LineString'], ['!=', 'mode', 'static']],
     layout: {
       'line-cap': 'round',
-      'line-join': 'round',
+      'line-join': 'round'
     },
     paint: {
       'line-color': '#D96B27',
       'line-dasharray': [0.2, 2],
-      'line-width': 4,
-    },
+      'line-width': 4
+    }
   },
 
   // polygon fill
@@ -25,8 +25,8 @@ export default [
     paint: {
       'fill-color': '#D20C0C',
       'fill-outline-color': '#D20C0C',
-      'fill-opacity': 0.1,
-    },
+      'fill-opacity': 0.1
+    }
   },
 
   // polygon outline stroke
@@ -37,13 +37,13 @@ export default [
     filter: ['all', ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
     layout: {
       'line-cap': 'round',
-      'line-join': 'round',
+      'line-join': 'round'
     },
     paint: {
       'line-color': '#D96B27',
       'line-dasharray': [0.2, 2],
-      'line-width': 4,
-    },
+      'line-width': 4
+    }
   },
   // vertex point halos
   {
@@ -52,8 +52,8 @@ export default [
     filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
     paint: {
       'circle-radius': 7,
-      'circle-color': '#FFF',
-    },
+      'circle-color': '#FFF'
+    }
   },
   // vertex points
   {
@@ -62,8 +62,8 @@ export default [
     filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
     paint: {
       'circle-radius': 6,
-      'circle-color': '#D96B27',
-    },
+      'circle-color': '#D96B27'
+    }
   },
 
   // radius label
@@ -76,9 +76,9 @@ export default [
       'text-anchor': 'left',
       'text-offset': [
         1,
-        0,
+        0
       ],
-      'text-size': 22,
+      'text-size': 22
     },
     paint: {
       'text-color': 'rgba(0, 0, 0, 1)',
@@ -89,16 +89,16 @@ export default [
         stops: [
           [
             7.99,
-            1,
+            1
           ],
           [
             8,
-            0,
-          ],
-        ],
+            0
+          ]
+        ]
       },
-      'text-halo-blur': 1,
-    },
+      'text-halo-blur': 1
+    }
   },
 
   // INACTIVE (static, already drawn)
@@ -109,12 +109,12 @@ export default [
     filter: ['all', ['==', '$type', 'LineString'], ['==', 'mode', 'static']],
     layout: {
       'line-cap': 'round',
-      'line-join': 'round',
+      'line-join': 'round'
     },
     paint: {
       'line-color': '#000',
-      'line-width': 3,
-    },
+      'line-width': 3
+    }
   },
   // polygon fill
   {
@@ -124,8 +124,8 @@ export default [
     paint: {
       'fill-color': '#000',
       'fill-outline-color': '#000',
-      'fill-opacity': 0.1,
-    },
+      'fill-opacity': 0.1
+    }
   },
   // polygon outline
   {
@@ -134,11 +134,11 @@ export default [
     filter: ['all', ['==', '$type', 'Polygon'], ['==', 'mode', 'static']],
     layout: {
       'line-cap': 'round',
-      'line-join': 'round',
+      'line-join': 'round'
     },
     paint: {
       'line-color': '#000',
-      'line-width': 3,
-    },
-  },
+      'line-width': 3
+    }
+  }
 ];

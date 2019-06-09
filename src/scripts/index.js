@@ -33,7 +33,7 @@ map.addControl(nav, 'top-left');
 
 const geocoder = new MapboxGeocoder({
   accessToken: mapboxgl.accessToken,
-  mapboxgl: mapboxgl,
+  mapboxgl,
   setZoom: 8,
   flyTo: false,
   placeholder: 'Search for locations...'
@@ -42,10 +42,9 @@ const geocoder = new MapboxGeocoder({
 geocoder.on('result', (e) => {
   const x = e.result.center[0];
   const y = e.result.center[1];
-  const offsetdist = .0025;
-  const bbox =  [[x - offsetdist, y - offsetdist], [x + offsetdist, y + offsetdist]];
-  map.fitBounds(bbox, {maxZoom: 12})
-  console.log(e.result.center[0])
+  const offsetdist = 0.0025;
+  const bbox = [[x - offsetdist, y - offsetdist], [x + offsetdist, y + offsetdist]];
+  map.fitBounds(bbox, { maxZoom: 12 });
 });
 
 document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
@@ -55,17 +54,17 @@ const drawControl = new MapboxDraw({
   controls: {
     rectangle: false,
     polygon: false,
-    trash: false,
+    trash: false
   },
   styles: drawStyles,
   modes: Object.assign({
-    draw_radius: RadiusMode,
-  }, MapboxDraw.modes),
+    draw_radius: RadiusMode
+  }, MapboxDraw.modes)
 });
 
 map.addControl(drawControl);
 
-function handleDrawButtonClick (e) {
+function handleDrawButtonClick(e) {
   drawControl.trash();
 
   if (map.getLayer('circle-line')) {

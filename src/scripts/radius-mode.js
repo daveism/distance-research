@@ -5,7 +5,6 @@
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import numeral from 'numeral';
 import lineDistance from '@turf/line-distance';
-import drawStyles from './drawstyles';
 
 const RadiusMode = MapboxDraw.modes.draw_line_string;
 
@@ -16,12 +15,12 @@ function createVertex(parentId, coordinates, path, selected) {
       meta: 'vertex',
       parent: parentId,
       coord_path: path,
-      active: (selected) ? 'true' : 'false',
+      active: (selected) ? 'true' : 'false'
     },
     geometry: {
       type: 'Point',
-      coordinates,
-    },
+      coordinates
+    }
   };
 }
 
@@ -30,7 +29,7 @@ function createVertex(parentId, coordinates, path, selected) {
 function createGeoJSONCircle(center, radiusInKm, parentId, points = 64) {
   const coords = {
     latitude: center[1],
-    longitude: center[0],
+    longitude: center[0]
   };
 
   const km = radiusInKm;
@@ -55,12 +54,12 @@ function createGeoJSONCircle(center, radiusInKm, parentId, points = 64) {
     type: 'Feature',
     geometry: {
       type: 'Polygon',
-      coordinates: [ret],
+      coordinates: [ret]
     },
     properties: {
       parent: parentId,
       active: 'true'
-    },
+    }
   };
 }
 
@@ -95,7 +94,7 @@ function getDisplayMeasurements(feature) {
 
   const displayMeasurements = {
     metric: `${numeral(metricMeasurement).format(metricFormat)} ${metricUnits}`,
-    standard: `${numeral(standardMeasurement).format(standardFormat)} ${standardUnits}`,
+    standard: `${numeral(standardMeasurement).format(standardFormat)} ${standardUnits}`
   };
 
   return displayMeasurements;
@@ -105,15 +104,16 @@ const doubleClickZoom = {
   enable: (ctx) => {
     setTimeout(() => {
       // First check we've got a map and some context.
-      if (!ctx.map || !ctx.map.doubleClickZoom || !ctx._ctx || !ctx._ctx.store || !ctx._ctx.store.getInitialConfigValue) return;
+      if (!ctx.map || !ctx.map.doubleClickZoom || !ctx._ctx ||
+         !ctx._ctx.store || !ctx._ctx.store.getInitialConfigValue) return;
       // Now check initial state wasn't false (we leave it disabled if so)
       if (!ctx._ctx.store.getInitialConfigValue('doubleClickZoom')) return;
       ctx.map.doubleClickZoom.enable();
     }, 0);
-  },
+  }
 };
 
-RadiusMode.clickAnywhere = function(state, e) {
+RadiusMode.clickAnywhere = function clickAnywhere(state, e) {
   // this ends the drawing after the user creates a second point, triggering this.onStop
   if (state.currentVertexPosition === 1) {
     state.line.addCoordinate(0, e.lngLat.lng, e.lngLat.lat);
@@ -133,7 +133,7 @@ RadiusMode.clickAnywhere = function(state, e) {
 
 // creates the final geojson point feature with a radius property
 // triggers draw.create
-RadiusMode.onStop = function(state) {
+RadiusMode.onStop = function onStop(state) {
   doubleClickZoom.enable(this);
 
   this.activateUIButton();
@@ -155,11 +155,11 @@ RadiusMode.onStop = function(state) {
       type: 'Feature',
       geometry: {
         type: 'Polygon',
-        coordinates: circleGeoJSON.geometry.coordinates,
+        coordinates: circleGeoJSON.geometry.coordinates
       },
       properties: {
-        radius: (lineDistance(lineGeoJson)).toFixed(1),
-      },
+        radius: (lineDistance(lineGeoJson)).toFixed(1)
+      }
     };
 
     if (this.map.getLayer('circle-line')) {
@@ -173,39 +173,39 @@ RadiusMode.onStop = function(state) {
       this.map.removeSource('circle');
     }
 
-    this.map.addSource("circle", {
-      "type": "geojson",
-      "data": pointWithRadius
+    this.map.addSource('circle', {
+      type: 'geojson',
+      data: pointWithRadius
     });
 
     this.map.addLayer({
-        "id": "circle-fill",
-        "type": "fill",
-        "source": "circle",
-        "paint": {
-          'fill-color': '#D20C0C',
-          'fill-outline-color': '#D20C0C',
-          'fill-opacity': 0.1
-        }
+      id: 'circle-fill',
+      type: 'fill',
+      source: 'circle',
+      paint: {
+        'fill-color': '#D20C0C',
+        'fill-outline-color': '#D20C0C',
+        'fill-opacity': 0.1
+      }
     });
 
     this.map.addLayer({
-        "id": "circle-line",
-        "type": "line",
-        "source": "circle",
-        layout: {
-          'line-cap': 'round',
-          'line-join': 'round',
-        },
-        paint: {
-          'line-color': '#D96B27',
-          'line-dasharray': [0.2, 2],
-          'line-width': 4,
-        }
+      id: 'circle-line',
+      type: 'line',
+      source: 'circle',
+      layout: {
+        'line-cap': 'round',
+        'line-join': 'round'
+      },
+      paint: {
+        'line-color': '#D96B27',
+        'line-dasharray': [0.2, 2],
+        'line-width': 4
+      }
     });
 
     this.map.fire('draw.create', {
-      features: [pointWithRadius],
+      features: [pointWithRadius]
     });
   } else {
     this.deleteFeature([state.line.id], { silent: true });
@@ -213,14 +213,14 @@ RadiusMode.onStop = function(state) {
   }
 };
 
-RadiusMode.toDisplayFeatures = function(state, geojson, display) {
+RadiusMode.toDisplayFeatures = function toDisplayFeatures(state, geojson, display) {
   const isActiveLine = geojson.properties.id === state.line.id;
-  geojson.properties.active = (isActiveLine) ? 'true' : 'false';
+  geojson.properties.active = (isActiveLine) ? 'true' : 'false';  // eslint-disable-line
   if (!isActiveLine) return display(geojson);
 
   // Only render the line if it has at least one real coordinate
   if (geojson.geometry.coordinates.length < 2) return null;
-  geojson.properties.meta = 'feature';
+  geojson.properties.meta = 'feature'; // eslint-disable-line
 
   // displays center vertex as a point feature
   display(createVertex(
@@ -243,12 +243,12 @@ RadiusMode.toDisplayFeatures = function(state, geojson, display) {
       active: 'true',
       radiusMetric: displayMeasurements.metric,
       radiusStandard: displayMeasurements.standard,
-      parent: state.line.id,
+      parent: state.line.id
     },
     geometry: {
       type: 'Point',
-      coordinates: geojson.geometry.coordinates[1],
-    },
+      coordinates: geojson.geometry.coordinates[1]
+    }
   };
   display(currentVertex);
 

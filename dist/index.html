@@ -6,6 +6,7 @@
   <meta name="description" content="Research project investigating how people perceive distance on maps.">
   <meta name="keywords" content="perceive distance on maps">
   <meta name = "author" content = "daveism" />
+  <!-- <link rel="stylesheet" href="<%=htmlWebpackPlugin.files.chunks.main.css %>"> -->
   <!-- <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" /> -->
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -23,13 +24,16 @@
 
   </script> -->
 
-</head>
+<link href="vendors~bootstrap.style.4118acc5edabc17b8f06.css?023081146af67cad3106" rel="stylesheet"><link href="style.f58e4fbc9bbd855e3960.css?023081146af67cad3106" rel="stylesheet"></head>
 <body class="w-100 h-100">
 
   <div class="w-100 h-100 d-flex justify-content-center" id="main-content">
     <div class="row w-100 h-100">
       <div class="col-4 h-75 align-self-center" id="map-action-holder">
-        <button type="button" class="btn btn-light w-100 align-self-end">
+        <div class="py-3 align-self-end" >
+          <div id='geocoder' class='geocoder'></div>
+        </div>
+        <button type="button" class="btn btn-light btn-draw-circle w-100 align-self-end">
           <i class="far fa-dot-circle"></i>
           Draw a Circle
         </button>
@@ -40,5 +44,5 @@
     </div>
   </div>
 
-<script type="text/javascript" src="vendors~index.app.bundle.js?b1ca5ae3e1f1bd11f5e0"></script><script type="text/javascript" src="index~store.app.bundle.js?b1ca5ae3e1f1bd11f5e0"></script><script type="text/javascript" src="index.app.bundle.js?b1ca5ae3e1f1bd11f5e0"></script><script type="text/javascript" src="vendors~bootstrap.app.bundle.js?b1ca5ae3e1f1bd11f5e0"></script><script type="text/javascript" src="bootstrap.app.bundle.js?b1ca5ae3e1f1bd11f5e0"></script><script type="text/javascript" src="store.app.bundle.js?b1ca5ae3e1f1bd11f5e0"></script></body>
+<script type="text/javascript" src="vendors~index.app.bundle.js?023081146af67cad3106"></script><script type="text/javascript" src="index~store.app.bundle.js?023081146af67cad3106"></script><script type="text/javascript" src="index.app.bundle.js?023081146af67cad3106"></script><script type="text/javascript" src="vendors~bootstrap.app.bundle.js?023081146af67cad3106"></script><script type="text/javascript" src="bootstrap.app.bundle.js?023081146af67cad3106"></script><script type="text/javascript" src="store.app.bundle.js?023081146af67cad3106"></script></body>
 </html>
