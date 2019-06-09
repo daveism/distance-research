@@ -1,3 +1,4 @@
+// https://gist.github.com/chriswhong/694779bc1f1e5d926e47bab7205fa559
 // custom mapbopx-gl-draw mode that modifies draw_line_string
 // shows a center point, radius line, and circle polygon while drawing
 // forces draw.create on creation of second vertex
