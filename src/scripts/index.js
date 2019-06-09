@@ -22,14 +22,30 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2ZWlzbSIsImEiOiJCdjUxT0FzIn0.V9oIk_wUc4uZu
 const map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/streets-v11',
-  center: [-82.35, 35.60], // starting position [lng, lat]
-  zoom: 9 // starting zoom
+  center: [-98, 38.88], // starting position [lng, lat]
+  // maxZoom: 14,
+  zoom: 3, // starting zoom
+  showZoom: true
 });
+
+const nav = new mapboxgl.NavigationControl();
+map.addControl(nav, 'top-left');
 
 const geocoder = new MapboxGeocoder({
   accessToken: mapboxgl.accessToken,
   mapboxgl: mapboxgl,
-  setZoom: 9
+  setZoom: 8,
+  flyTo: false,
+  placeholder: 'Search for locations...'
+});
+
+geocoder.on('result', (e) => {
+  const x = e.result.center[0];
+  const y = e.result.center[1];
+  const offsetdist = .0025;
+  const bbox =  [[x - offsetdist, y - offsetdist], [x + offsetdist, y + offsetdist]];
+  map.fitBounds(bbox, {maxZoom: 12})
+  console.log(e.result.center[0])
 });
 
 document.getElementById('geocoder').appendChild(geocoder.onAdd(map));

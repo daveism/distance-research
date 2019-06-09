@@ -13,5 +13,6 @@ html, body {
 
 #map-holder, #map {
   height: 100%;
-  padding-right: 12px;
+  padding-right: $default-padding;
+  @include border-radius($default-radius, $default-radius);
 }

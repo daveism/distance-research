@@ -2,6 +2,8 @@
 $body-background-color:   #2b2b2b;
 $body-color:              #eeeeee;
 $default-control-height:  36px;
+$default-radius:          10px;
+$default-padding:          10px;
 
 .btn-light {
   background-color: $body-color !important;
@@ -14,11 +16,20 @@ $default-control-height:  36px;
   }
 }
 
+.btn {
+  cursor: pointer;
+  text-align: start !important;
+  &:focus {
+    outline: none !important;
+    border: unset !important;
+  }
+}
+
 .mapboxgl-ctrl-geocoder--input {
   background-color: $body-color !important;
   color: $body-background-color !important;
   height: $default-control-height !important;
-  @include border-radius(10px, 10px);
+  @include border-radius($default-radius, $default-radius);
 }
 
 .mapboxgl-ctrl-geocoder .suggestions{
@@ -36,20 +47,16 @@ $default-control-height:  36px;
 .mapboxgl-ctrl-geocoder--button {
   background-color: $body-color !important;
   color: $body-background-color !important;
-}
-.suggestions-wrapper {
-  cursor: pointer;
-  background-color: $body-color !important;
-  color: $body-background-color !important;
-}
-
-.btn {
-  cursor: pointer;
-  text-align: start !important;
   &:focus {
     outline: none !important;
     border: unset !important;
   }
+}
+
+.suggestions-wrapper {
+  cursor: pointer;
+  background-color: $body-color !important;
+  color: $body-background-color !important;
 }
 
 .mapbox-gl-draw_ctrl-draw-btn {
