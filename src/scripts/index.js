@@ -36,7 +36,7 @@ const geocoder = new MapboxGeocoder({
   mapboxgl,
   setZoom: 8,
   flyTo: false,
-  placeholder: 'Search for locations...'
+  placeholder: 'Search for a location...'
 });
 
 geocoder.on('result', (e) => {
@@ -44,7 +44,23 @@ geocoder.on('result', (e) => {
   const y = e.result.center[1];
   const offsetdist = 0.0025;
   const bbox = [[x - offsetdist, y - offsetdist], [x + offsetdist, y + offsetdist]];
-  map.fitBounds(bbox, { maxZoom: 12 });
+
+  //create random zoom incase users are influenced by intial zoomlevel
+  const min = 10;
+  const max = 14;
+  const zm = Math.floor(Math.random()*(max-min+1)+min);
+  map.fitBounds(bbox, { maxZoom: zm });
+
+  const circleButtonElem = document.getElementById('circle-button');
+  if (circleButtonElem.classList.contains('disabled')) {
+    circleButtonElem.classList.remove('disabled');
+    $('#circle-button').tooltip({ trigger: 'manual' });
+    $('#circle-button').tooltip('hide');
+    $('#circle-button').tooltip('disable');
+    $('#circle-button').tooltip('dispose');
+    document.getElementById('step2-title').classList.remove('disabled');
+    document.getElementById('step2-directions').classList.remove('disabled');
+  }
 });
 
 document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
@@ -62,9 +78,22 @@ const drawControl = new MapboxDraw({
   }, MapboxDraw.modes)
 });
 
+
 map.addControl(drawControl);
 
 function handleDrawButtonClick(e) {
+  const circleButtonElem = document.getElementById('circle-button');
+  if (circleButtonElem.classList.contains('disabled')) {
+    $('#circle-button').tooltip({ trigger: 'hover focus' });
+    $('#circle-button').tooltip('show');
+    return null;
+  } else {
+    $('#circle-button').tooltip({ trigger: 'manual' });
+    $('#circle-button').tooltip('hide');
+    $('#circle-button').tooltip('disable');
+    $('#circle-button').tooltip('dispose');
+  }
+
   drawControl.trash();
 
   if (map.getLayer('circle-line')) {
@@ -82,3 +111,38 @@ function handleDrawButtonClick(e) {
 }
 const drawCircleElement = document.querySelector('.btn-draw-circle');
 drawCircleElement.addEventListener('click', handleDrawButtonClick);
+
+const directionsOne = [
+  'Search for a location you care about.',
+  'Search for a location to find about crime.',
+  'Search for a location to find about a pizza place.'
+];
+
+const minOne = 0;
+const maxOne = 2;
+const messageIndexOne = Math.floor(Math.random()*(maxOne-minOne+1)+minOne);
+const stepDirections1 = document.getElementById('step1-directions');
+stepDirections1.innerHTML = directionsOne[messageIndexOne];
+
+const  directionsTwo = [
+  'Draw a circle that represents 1 mile from the location.',
+  'Draw a circle that represents a 5 minute <strong>DRIVE</strong>.',
+  'Draw a circle that represents a 5 minute <strong>WALK</strong>.'
+];
+
+const minTwo = 0;
+const maxTwo = 2;
+const messageIndexTwo = Math.floor(Math.random()*(maxTwo-minTwo+1)+minTwo);
+const stepDirections2 = document.getElementById('step2-directions');
+console.log(directionsTwo[messageIndexTwo])
+stepDirections2.innerHTML = directionsTwo[messageIndexTwo];
+
+// adds a custom google events
+function googleAnalyticsEvent(action = '', category = '', label = '', value = 0) {
+  gtag('event', action, {
+    event_category: category,
+    event_label: label,
+    value: `${value}`,
+    uuid: store.getStateItem('uuid')
+  });
+}

@@ -1,9 +1,7 @@
 // Your variable overrides
-$body-background-color:   #2b2b2b;
-$body-color:              #eeeeee;
-$default-control-height:  36px;
-$default-radius:          10px;
-$default-padding:          10px;
+.h-80 {
+  height: 80% !important;
+}
 
 .btn-light {
   background-color: $body-color !important;
@@ -14,6 +12,9 @@ $default-padding:          10px;
     outline: none !important;
     border: unset !important;
   }
+  &.disabled {
+    background-color: darken($body-color, 20) !important;
+  }
 }
 
 .btn {
@@ -23,6 +24,10 @@ $default-padding:          10px;
     outline: none !important;
     border: unset !important;
   }
+}
+
+.mapboxgl-ctrl-geocoder {
+  max-width: unset !important;
 }
 
 .mapboxgl-ctrl-geocoder--input {
@@ -65,4 +70,17 @@ $default-padding:          10px;
 
 .mapboxgl-ctrl-geocoder {
   width: 100% !important;
+}
+
+.bs-tooltip-top .arrow::before, .bs-tooltip-auto[x-placement^="top"] .arrow::before {
+  border-top-color: darken($body-color, 20) !important;
+}
+
+.arrow:before {
+  border-top-color: darken($body-color, 20) !important;
+}
+
+.tooltip .tooltip-inner {
+  background-color: darken($body-color, 20) !important;
+  color: $body-background-color !important;
 }

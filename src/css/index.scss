@@ -1,9 +1,16 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,600,700);
+$body-background-color:   #2b2b2b;
+$body-color:              #eeeeee;
+$default-control-height:  36px;
+$default-radius:          10px;
+$default-padding:         10px;
+$roboto:                  Roboto, Helvetica, 'Helvetica Nue', Arial, sans-serif;
+
 @import "~bootstrap/scss/bootstrap";
 @import "_custom";
 @import "~mapbox-gl/dist/mapbox-gl.css";
 @import "~@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 @import "~@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
-
 
 html, body {
     height: 100%;
@@ -15,4 +22,24 @@ html, body {
   height: 100%;
   padding-right: $default-padding;
   @include border-radius($default-radius, $default-radius);
+}
+
+.steps {
+  padding-top: 0px !important;
+}
+
+.step-title {
+  font-size: 24px;
+  font-weight: 700;
+  &.disabled {
+    color: darken($body-color, 20) !important;
+  }
+}
+
+.step-directions {
+  font-size: 16px;
+  font-weight: 500;
+  &.disabled {
+    color: darken($body-color, 20) !important;
+  }
 }

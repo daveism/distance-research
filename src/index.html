@@ -6,39 +6,47 @@
   <meta name="description" content="Research project investigating how people perceive distance on maps.">
   <meta name="keywords" content="perceive distance on maps">
   <meta name = "author" content = "daveism" />
-  <!-- <link rel="stylesheet" href="<%=htmlWebpackPlugin.files.chunks.main.css %>"> -->
   <!-- <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" /> -->
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
-  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-130784477-1"></script> -->
-  <!-- <script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-47315207-2"></script>
+  <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
 
-    gtag('config', 'UA-131545939-1', {
-      'custom_map': {
-        'dimension1': 'uuid',
-      }
-    });
+    gtag('config', 'UA-47315207-2');
+  </script>
 
-  </script> -->
 
 </head>
 <body class="w-100 h-100">
 
   <div class="w-100 h-100 d-flex justify-content-center" id="main-content">
-    <div class="row w-100 h-100">
-      <div class="col-4 h-75 align-self-center" id="map-action-holder">
-        <div class="py-3 align-self-end" >
-          <div id='geocoder' class='geocoder'></div>
+    <div class="row w-100 h-100 px-3">
+      <div class="col-12 col-sm-12 col-md-5 col-xl-5 h-80 align-self-center" id="map-action-holder">
+
+        <div class="steps py-3" >
+          <div id="step1-title" class="step-title">Step 1</div>
+          <div id="step1-directions" class="step-directions">Search for a place that you want to find about crime</div>
+          <div class="py-3 align-self-end" >
+            <div id='geocoder' class='geocoder'></div>
+          </div>
         </div>
-        <button type="button" class="btn btn-light btn-draw-circle w-100 align-self-end">
-          <i class="far fa-dot-circle"></i>
-          Draw a Circle
-        </button>
+
+        <div class="py-3" >
+        <div id="step2-title" class="step-title disabled">Step 2</div>
+        <div id="step2-directions" class="step-directions disabled">Draw a circle that represents 1 mile from the location</div>
+          <div class="py-3 align-self-end" >
+            <button id="circle-button" type="button" class="btn btn-light btn-draw-circle disabled w-100 align-self-end"  data-toggle="tooltip" data-html="true" title="Seach for a location first!">
+              <i class="far fa-dot-circle"></i>
+              Draw a Circle
+            </button>
+          </div>
+        </div>
+
       </div>
-      <div class="col-8 h-75 align-self-center" id="map-holder">
+      <div class="col-12 col-md-7 col-xl-7 h-80 align-self-center" id="map-holder">
         <div id="map" ref="mapContainer" class="map"></div>
       </div>
     </div>
