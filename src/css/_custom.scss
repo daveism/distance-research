@@ -1,15 +1,50 @@
 // Your variable overrides
-$body-background-color:   $gray-800;
-$body-color:              $gray-200;
+$body-background-color:   #2b2b2b;
+$body-color:              #eeeeee;
+$default-control-height:  36px;
 
 .btn-light {
+  background-color: $body-color !important;
+  color: $body-background-color !important;
+  height: $default-control-height !important;
+  @include border-radius($default-control-height, $default-control-height);
   &:focus {
     outline: none !important;
     border: unset !important;
   }
 }
 
+.mapboxgl-ctrl-geocoder--input {
+  background-color: $body-color !important;
+  color: $body-background-color !important;
+  height: $default-control-height !important;
+  @include border-radius(10px, 10px);
+}
+
+.mapboxgl-ctrl-geocoder .suggestions{
+  background-color: $body-color !important;
+  color: $body-background-color !important;
+}
+
+.mapboxgl-ctrl-geocoder .suggestions > li > a:hover {
+  background-color: darken($body-color, 12) !important;
+  color: $body-background-color !important;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.mapboxgl-ctrl-geocoder--button {
+  background-color: $body-color !important;
+  color: $body-background-color !important;
+}
+.suggestions-wrapper {
+  cursor: pointer;
+  background-color: $body-color !important;
+  color: $body-background-color !important;
+}
+
 .btn {
+  cursor: pointer;
   text-align: start !important;
   &:focus {
     outline: none !important;
