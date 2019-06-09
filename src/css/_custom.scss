@@ -114,4 +114,7 @@
 .tooltip .tooltip-inner {
   background-color: darken($body-color, 20) !important;
   color: $body-background-color !important;
+  padding: 12px !important;
+  min-width: 250px !important;
+  font-weight: 600 !important;
 }

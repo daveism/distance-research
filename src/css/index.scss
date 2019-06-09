@@ -13,9 +13,10 @@ $roboto:                  Roboto, Helvetica, 'Helvetica Nue', Arial, sans-serif;
 @import "~@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
 html, body {
-    height: 100%;
-    background-color: $body-background-color;
-    color: $body-color;
+  font-family: $roboto;
+  height: 100%;
+  background-color: $body-background-color;
+  color: $body-color;
 }
 
 #map-holder, #map {
