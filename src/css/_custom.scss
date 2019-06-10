@@ -7,7 +7,7 @@
   background-color: $body-color !important;
   color: $body-background-color !important;
   height: $default-control-height !important;
-  @include border-radius($default-control-height, $default-control-height);
+  @include border-radius($round-radius, $round-radius);
   &:focus {
     outline: none !important;
     border-width: 0px !important;
@@ -31,7 +31,7 @@
   background-color: $xlight !important;
   color: $body-color !important;
   height: $default-control-height !important;
-  @include border-radius($default-control-height, $default-control-height);
+  @include border-radius($round-radius, $round-radius);
   &:focus {
     outline: none !important;
     border-width: 0px !important;
