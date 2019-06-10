@@ -5,11 +5,13 @@
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import numeral from 'numeral';
 import lineDistance from '@turf/line-distance';
-import { googleAnalyticsEvent } from './ga';
+import { GoogleAnalytics } from './ga';
 import { Store } from './store';
 
 const store = new Store({});
 const RadiusMode = MapboxDraw.modes.draw_line_string;
+const googleAnalytics = new GoogleAnalytics();
+
 
 function createVertex(parentId, coordinates, path, selected) {
   return {
@@ -154,7 +156,7 @@ RadiusMode.onStop = function onStop(state) {
     const circleGeoJSON = createGeoJSONCircle(startPoint, distance, null, 32);
 
     // ga event action, category, label
-    googleAnalyticsEvent('data', 'circle', JSON.stringify(circleGeoJSON));
+    googleAnalytics.setEvent('data', 'circle', JSON.stringify(circleGeoJSON));
 
     // reconfigure the geojson line into a geojson point with a radius property
     const pointWithRadius = {

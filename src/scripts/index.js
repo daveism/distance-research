@@ -8,9 +8,10 @@ import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { Store } from './store';
 import RadiusMode from './radiusMode';
 import drawStyles from './drawstyles';
-import { googleAnalyticsEvent } from './ga';
+import { GoogleAnalytics } from './ga';
 
 const store = new Store({});
+const googleAnalytics = new GoogleAnalytics();
 
 // Kicks off the process of finding <i> tags and replacing with <svg>
 // addes support for fontawesome
@@ -22,7 +23,7 @@ const url = new URL(urlString);
 const userType = url.searchParams.get('userType');
 
 // ga event action, category, label
-googleAnalyticsEvent('data', 'userType', userType);
+googleAnalytics.setEvent('data', 'userType', userType);
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2ZWlzbSIsImEiOiJCdjUxT0FzIn0.V9oIk_wUc4uZu7UBblR8mw';
 
@@ -166,7 +167,7 @@ geocoder.on('result', (e) => {
   const y = e.result.center[1];
 
   // ga event action, category, label
-  googleAnalyticsEvent('data', 'searchpoint', `${x}, ${y}`);
+  googleAnalytics.setEvent('data', 'searchpoint', `${x}, ${y}`);
 
   const offsetdist = 0.0025;
   const bbox = [[x - offsetdist, y - offsetdist], [x + offsetdist, y + offsetdist]];
@@ -178,7 +179,7 @@ geocoder.on('result', (e) => {
   map.fitBounds(bbox, { maxZoom: zm });
 
   // ga event action, category, label
-  googleAnalyticsEvent('data', 'searchzoom', zm);
+  googleAnalytics.setEvent('data', 'searchzoom', zm);
 
 
   const circleButtonElem = document.getElementById('circle-button');
@@ -211,7 +212,7 @@ const stepDirections1 = document.getElementById('step1-directions');
 stepDirections1.innerHTML = directionsOne[messageIndexOne];
 
 // ga event action, category, label
-googleAnalyticsEvent('data', 'step1text', directionsOne[messageIndexOne]);
+googleAnalytics.setEvent('data', 'step1text', directionsOne[messageIndexOne]);
 
 const directionsTwo = [
   'Draw a circle that represents 1 mile from the location.',
@@ -226,7 +227,7 @@ const stepDirections2 = document.getElementById('step2-directions');
 stepDirections2.innerHTML = directionsTwo[messageIndexTwo];
 
 // ga event action, category, label
-googleAnalyticsEvent('data', 'step2text', directionsTwo[messageIndexTwo]);
+googleAnalytics.setEvent('data', 'step2text', directionsTwo[messageIndexTwo]);
 
 
 const aggreeButtonElement = document.getElementById('aggree-button');
