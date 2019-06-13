@@ -158,6 +158,7 @@ if (studyCompleted) { // || studyAgrreed
   handleAgreeClick();
   document.getElementById('study-complete').classList.remove('d-none');
   document.getElementById('study-progress').remove();
+  document.getElementById('map-holder').remove();
 } else {
   // document.getElementById('study-progress').classList.remove('d-none');
   store.setStateItem('studycompleted', false);

@@ -66,8 +66,9 @@ html, body {
 }
 
 .step-minor-directions {
+  padding-top: 12px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 200;
   &.disabled {
     color: darken($body-color, 20) !important;
   }
