@@ -118,6 +118,11 @@ const doubleClickZoom = {
   }
 };
 
+// Whenever a user clicks on a key while focused on the map, it will be sent here
+RadiusMode.onKeyUp = function(state, e) {
+  if (e.keyCode === 27) return this.changeMode('simple_select');
+};
+
 RadiusMode.clickAnywhere = function clickAnywhere(state, e) {
   // this ends the drawing after the user creates a second point, triggering this.onStop
   if (state.currentVertexPosition === 1) {

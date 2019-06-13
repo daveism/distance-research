@@ -14,6 +14,18 @@ $roboto:                  Roboto, Helvetica, 'Helvetica Nue', Arial, sans-serif;
 @import "~@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 @import "~@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
+@mixin box-shadow($top, $left, $blur, $color, $inset: false) {
+  @if $inset {
+    -webkit-box-shadow:inset $top $left $blur $color;
+    -moz-box-shadow:inset $top $left $blur $color;
+    box-shadow:inset $top $left $blur $color;
+  } @else {
+    -webkit-box-shadow: $top $left $blur $color;
+    -moz-box-shadow: $top $left $blur $color;
+    box-shadow: $top $left $blur $color;
+  }
+}
+
 html, body {
   font-family: $roboto;
   height: 100%;
@@ -25,6 +37,12 @@ html, body {
   height: 100%;
   padding-right: $default-padding;
   @include border-radius($default-radius, $default-radius);
+}
+
+#map-holder {
+  @media only screen and (max-width: 600px) {
+    // height: unset !important;
+  }
 }
 
 .steps {
@@ -41,6 +59,14 @@ html, body {
 
 .step-directions {
   font-size: 16px;
+  font-weight: 500;
+  &.disabled {
+    color: darken($body-color, 20) !important;
+  }
+}
+
+.step-minor-directions {
+  font-size: 14px;
   font-weight: 500;
   &.disabled {
     color: darken($body-color, 20) !important;

@@ -30,19 +30,24 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2ZWlzbSIsImEiOiJCdjUxT0FzIn0.V9oIk_wUc4uZu
 const map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/streets-v11',
+  // 'mapbox://styles/daveism/cjwrrdfd20uic1dnzsti2owlk', - dark
   center: [-98, 38.88], // starting position [lng, lat]
-  // maxZoom: 14,
   zoom: 3, // starting zoom
-  showZoom: true
+  showZoom: true,
+  touchEnabled: true,
+  keybindings: true
 });
 
 // setup map
 const drawControl = new MapboxDraw({
-  displayControlsDefault: false,
+  displayControlsDefault: true,
   controls: {
-    rectangle: false,
-    polygon: false,
-    trash: false
+    rectangle: true,
+    polygon: true,
+    linestring: true,
+    trash: true,
+    touchEnabled: true,
+    keybindings: true
   },
   styles: drawStyles,
   modes: Object.assign({
@@ -228,7 +233,6 @@ stepDirections2.innerHTML = directionsTwo[messageIndexTwo];
 
 // ga event action, category, label
 googleAnalytics.setEvent('data', 'step2text', directionsTwo[messageIndexTwo]);
-
 
 const aggreeButtonElement = document.getElementById('aggree-button');
 aggreeButtonElement.addEventListener('click', handleAgreeClick);
