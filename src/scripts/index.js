@@ -218,10 +218,14 @@ geocoder.on('result', (e) => {
   }
 });
 
-document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
-
+const geocodeElem = document.getElementById('geocoder');
+if (geocodeElem) {
+  geocodeElem.appendChild(geocoder.onAdd(map));
+}
 const drawCircleElement = document.querySelector('.btn-draw-circle');
-drawCircleElement.addEventListener('click', handleDrawButtonClick);
+if (drawCircleElement) {
+  drawCircleElement.addEventListener('click', handleDrawButtonClick);
+}
 
 const directionsOne = [
   'Search for a location you care about.',
@@ -233,7 +237,9 @@ const minOne = 0;
 const maxOne = 2;
 const messageIndexOne = Math.floor(Math.random() * (maxOne - minOne + 1) + minOne);
 const stepDirections1 = document.getElementById('step1-directions');
-stepDirections1.innerHTML = directionsOne[messageIndexOne];
+if (stepDirections1) {
+  stepDirections1.innerHTML = directionsOne[messageIndexOne];
+}
 
 // ga event action, category, label
 googleAnalytics.setEvent('data', 'step1text', directionsOne[messageIndexOne]);
@@ -248,13 +254,19 @@ const minTwo = 0;
 const maxTwo = 2;
 const messageIndexTwo = Math.floor(Math.random() * (maxTwo - minTwo + 1) + minTwo);
 const stepDirections2 = document.getElementById('step2-directions');
-stepDirections2.innerHTML = directionsTwo[messageIndexTwo];
+if (stepDirections2) {
+  stepDirections2.innerHTML = directionsTwo[messageIndexTwo];
+}
 
 // ga event action, category, label
 googleAnalytics.setEvent('data', 'step2text', directionsTwo[messageIndexTwo]);
 
 const aggreeButtonElement = document.getElementById('aggree-button');
-aggreeButtonElement.addEventListener('click', handleAgreeClick);
+if (aggreeButtonElement) {
+  aggreeButtonElement.addEventListener('click', handleAgreeClick);
+}
 
 const dissaggreeButtonElement = document.getElementById('diaggree-button');
-dissaggreeButtonElement.addEventListener('click', handleDissagreeClick);
+if (dissaggreeButtonElement) {
+  dissaggreeButtonElement.addEventListener('click', handleDissagreeClick);
+}
