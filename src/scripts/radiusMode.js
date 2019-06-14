@@ -119,8 +119,11 @@ const doubleClickZoom = {
 };
 
 // Whenever a user clicks on a key while focused on the map, it will be sent here
-RadiusMode.onKeyUp = function(state, e) {
-  if (e.keyCode === 27) return this.changeMode('simple_select');
+RadiusMode.onKeyUp = function onKeyUp(state, e) {
+  if (e.keyCode === 27) {
+    return this.changeMode('simple_select');
+  }
+  return null;
 };
 
 RadiusMode.clickAnywhere = function clickAnywhere(state, e) {
@@ -162,6 +165,10 @@ RadiusMode.onStop = function onStop(state) {
 
     // ga event action, category, label
     googleAnalytics.setEvent('data', 'circle', JSON.stringify(circleGeoJSON));
+
+    // const linedist = getDisplayMeasurements(lineGeoJson);
+    const feet = (distance * 1000) * 3.28084;
+    googleAnalytics.setEvent('data', 'distance', feet);
 
     // reconfigure the geojson line into a geojson point with a radius property
     const pointWithRadius = {

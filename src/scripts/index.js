@@ -68,6 +68,22 @@ const geocoder = new MapboxGeocoder({
   placeholder: 'Search for a location...'
 });
 
+map.on('zoomend', () => {
+  // console.log(map.getZoom())
+  if (map.getZoom() > 11.5) {
+    const circleButtonElem = document.getElementById('circle-button');
+    if (circleButtonElem.classList.contains('disabled')) {
+      circleButtonElem.classList.remove('disabled');
+      $('#circle-button').tooltip({ trigger: 'manual' });
+      $('#circle-button').tooltip('hide');
+      $('#circle-button').tooltip('disable');
+      $('#circle-button').tooltip('dispose');
+      document.getElementById('step2-title').classList.remove('disabled');
+      document.getElementById('step2-directions').classList.remove('disabled');
+    }
+  }
+});
+
 // function
 function handleAgreeClick() {
   document.getElementById('study-progress').classList.remove('d-none');
@@ -102,15 +118,17 @@ function uuid() {
 
 function handleDrawButtonClick(e) {
   const circleButtonElem = document.getElementById('circle-button');
-  if (circleButtonElem.classList.contains('disabled')) {
-    $('#circle-button').tooltip({ trigger: 'hover focus' });
-    $('#circle-button').tooltip('show');
-    return null;
-  } else { // eslint-disable-line
-    $('#circle-button').tooltip({ trigger: 'manual' });
-    $('#circle-button').tooltip('hide');
-    $('#circle-button').tooltip('disable');
-    $('#circle-button').tooltip('dispose');
+  if (circleButtonElem) {
+    if (circleButtonElem.classList.contains('disabled')) {
+      $('#circle-button').tooltip({ trigger: 'hover focus' });
+      $('#circle-button').tooltip('show');
+      return null;
+    } else { // eslint-disable-line
+      $('#circle-button').tooltip({ trigger: 'manual' });
+      $('#circle-button').tooltip('hide');
+      $('#circle-button').tooltip('disable');
+      $('#circle-button').tooltip('dispose');
+    }
   }
 
   drawControl.trash();
