@@ -45,7 +45,7 @@ const drawControl = new MapboxDraw({
     rectangle: true,
     polygon: true,
     line_string: true,
-    trash: true,
+    trash: true
   },
   options: {
     touchEnabled: true,

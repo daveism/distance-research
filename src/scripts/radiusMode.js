@@ -14,6 +14,7 @@ const googleAnalytics = new GoogleAnalytics();
 
 
 let isTouchMove = false;
+store.setStateItem('isTouchMove', true);
 
 function createVertex(parentId, coordinates, path, selected) {
   return {
@@ -127,15 +128,15 @@ RadiusMode.onKeyUp = function onKeyUp(state, e) {
   }
 };
 
-function isVertex(e) {
-  const featureTarget = e.featureTarget;
-  if (!featureTarget) return false;
-  if (!featureTarget.properties) return false;
-  return featureTarget.properties.meta === Constants.meta.VERTEX;
-}
+// function isVertex(e) {
+//   const featureTarget = e.featureTarget;
+//   if (!featureTarget) return false;
+//   if (!featureTarget.properties) return false;
+//   return featureTarget.properties.meta === Constants.meta.VERTEX;
+// }
 
 function interactiveDraw(state, e, userSource, self) {
-   // this ends the drawing after the user creates a second point, triggering this.onStop
+  // this ends the drawing after the user creates a second point, triggering this.onStop
   if (state.currentVertexPosition === 1) {
     let coordnum = 0;
     // for reasons I am to lazy to figure out when a toch event is fired
@@ -160,24 +161,24 @@ function interactiveDraw(state, e, userSource, self) {
 }
 
 RadiusMode.onTap = function onTap(state, e) {
-  return interactiveDraw(state, e, 'tap', this)
+  return interactiveDraw(state, e, 'tap', this);
 };
 
-RadiusMode.onTouchMove = function onTouchMove(state,e) {
+RadiusMode.onTouchMove = function onTouchMove(state, e) {
   isTouchMove = true;
   return isTouchMove;
-}
+};
 
-RadiusMode.onTouchEnd = function onTouchMove(state,e) {
+RadiusMode.onTouchEnd = function onTouchMove(state, e) {
   if (isTouchMove) {
     isTouchMove = false;
-    return interactiveDraw(state, e, 'mouse', this)
+    return interactiveDraw(state, e, 'mouse', this);
   }
   return null;
-}
+};
 
 RadiusMode.clickAnywhere = function clickAnywhere(state, e, userType) {
-  return interactiveDraw(state, e, 'mouse', this)
+  return interactiveDraw(state, e, 'mouse', this);
 };
 
 // creates the final geojson point feature with a radius property
