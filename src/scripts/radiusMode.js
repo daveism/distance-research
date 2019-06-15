@@ -13,6 +13,8 @@ const RadiusMode = MapboxDraw.modes.draw_line_string;
 const googleAnalytics = new GoogleAnalytics();
 
 
+let isTouchMove = false;
+
 function createVertex(parentId, coordinates, path, selected) {
   return {
     type: 'Feature',
@@ -161,6 +163,19 @@ RadiusMode.onTap = function onTap(state, e) {
   return interactiveDraw(state, e, 'tap', this)
 };
 
+RadiusMode.onTouchMove = function onTouchMove(state,e) {
+  isTouchMove = true;
+  return isTouchMove;
+}
+
+RadiusMode.onTouchEnd = function onTouchMove(state,e) {
+  if (isTouchMove) {
+    isTouchMove = false;
+    return interactiveDraw(state, e, 'mouse', this)
+  }
+  return null;
+}
+
 RadiusMode.clickAnywhere = function clickAnywhere(state, e, userType) {
   return interactiveDraw(state, e, 'mouse', this)
 };
@@ -250,10 +265,10 @@ RadiusMode.onStop = function onStop(state) {
     this.map.fire('draw.create', {
       features: [pointWithRadius]
     });
-    // console.log('studycompleted', true)
-    store.setStateItem('studycompleted', true);
-    document.getElementById('study-complete').classList.remove('d-none');
-    document.getElementById('study-progress').remove();
+    // // console.log('studycompleted', true)
+    // store.setStateItem('studycompleted', true);
+    // document.getElementById('study-complete').classList.remove('d-none');
+    // document.getElementById('study-progress').remove();
   } else {
     this.deleteFeature([state.line.id], { silent: true });
     this.changeMode('simple_select', {}, { silent: true });
