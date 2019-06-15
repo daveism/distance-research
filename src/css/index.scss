@@ -39,16 +39,15 @@ html, body {
   @include border-radius($default-radius, $default-radius);
 }
 
-#map-holder {
-  @media only screen and (max-width: 600px) {
-    // height: unset !important;
-  }
-}
-
 #map-action-holder, #map-holder {
   margin-top: 24px !important;
 }
 
+#map-holder {
+  @media only screen and (max-width: 600px) {
+    margin-top: 48px !important;
+  }
+}
 .steps {
   padding-top: 0px !important;
 }
