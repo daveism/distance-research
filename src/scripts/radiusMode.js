@@ -12,8 +12,6 @@ const store = new Store({});
 const RadiusMode = MapboxDraw.modes.draw_line_string;
 const googleAnalytics = new GoogleAnalytics();
 
-
-let isTouchMove = false;
 store.setStateItem('isTouchMove', true);
 
 function createVertex(parentId, coordinates, path, selected) {
@@ -149,6 +147,8 @@ function interactiveDraw(state, e, userSource, self) {
   }
 
   self.updateUIClasses({ mouse: 'add' });
+  self.updateUIClasses({ touch: 'add' });
+
   state.line.updateCoordinate(state.currentVertexPosition, e.lngLat.lng, e.lngLat.lat);
   if (state.direction === 'forward') {
     state.currentVertexPosition += 1; // eslint-disable-line
@@ -160,19 +160,35 @@ function interactiveDraw(state, e, userSource, self) {
   return null;
 }
 
+RadiusMode.onTouchStart = function onTap(state, e) {
+  console.log('onTouchStart')
+  if (state.didTouchStart || !state.isTouchMove) {
+    state.didTouchStart = true;
+    return interactiveDraw(state, e, 'tap', this);
+  }
+  return null;
+};
+
 RadiusMode.onTap = function onTap(state, e) {
-  return interactiveDraw(state, e, 'tap', this);
+  console.log('onTap')
+  if (!state.didTouchStart) {
+    return interactiveDraw(state, e, 'tap', this);
+  }
 };
 
 RadiusMode.onTouchMove = function onTouchMove(state, e) {
-  isTouchMove = true;
-  return isTouchMove;
+  state.isTouchMove = true;
+  this.map['dragPan'].disable();
+  return state.isTouchMove;
 };
 
 RadiusMode.onTouchEnd = function onTouchMove(state, e) {
-  if (isTouchMove) {
-    isTouchMove = false;
-    return interactiveDraw(state, e, 'mouse', this);
+  console.log('onTouchEnd')
+
+  if (state.isTouchMove) {
+    state.isTouchMove = false;
+    this.map['dragPan'].enable();
+    return interactiveDraw(state, e, 'tap', this);
   }
   return null;
 };
