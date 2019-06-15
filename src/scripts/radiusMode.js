@@ -70,8 +70,6 @@ function createGeoJSONCircle(center, radiusInKm, parentId, points = 64) {
 
 function getDisplayMeasurements(feature) {
   // should log both metric and standard display strings for the current drawn feature
-
-
   // metric calculation
   const drawnLength = (lineDistance(feature) * 1000); // meters
 
@@ -118,21 +116,36 @@ const doubleClickZoom = {
   }
 };
 
+
 // Whenever a user clicks on a key while focused on the map, it will be sent here
 RadiusMode.onKeyUp = function onKeyUp(state, e) {
   if (e.keyCode === 27) {
-    return this.changeMode('simple_select');
+    this.deleteFeature([state.line.id], { silent: true });
+    this.changeMode('simple_select', {}, { silent: true });
   }
-  return null;
 };
 
-RadiusMode.clickAnywhere = function clickAnywhere(state, e) {
-  // this ends the drawing after the user creates a second point, triggering this.onStop
+function isVertex(e) {
+  const featureTarget = e.featureTarget;
+  if (!featureTarget) return false;
+  if (!featureTarget.properties) return false;
+  return featureTarget.properties.meta === Constants.meta.VERTEX;
+}
+
+function interactiveDraw(state, e, userSource, self) {
+   // this ends the drawing after the user creates a second point, triggering this.onStop
   if (state.currentVertexPosition === 1) {
-    state.line.addCoordinate(0, e.lngLat.lng, e.lngLat.lat);
-    return this.changeMode('simple_select', { featureIds: [state.line.id] });
+    let coordnum = 0;
+    // for reasons I am to lazy to figure out when a toch event is fired
+    // you need an extra click or simulate an extra click to finish the circle.
+    if (userSource === 'tap') {
+      coordnum = 2;
+    }
+    state.line.addCoordinate(coordnum, e.lngLat.lng, e.lngLat.lat);
+    return self.changeMode('simple_select', { featureIds: [state.line.id] });
   }
-  this.updateUIClasses({ mouse: 'add' });
+
+  self.updateUIClasses({ mouse: 'add' });
   state.line.updateCoordinate(state.currentVertexPosition, e.lngLat.lng, e.lngLat.lat);
   if (state.direction === 'forward') {
     state.currentVertexPosition += 1; // eslint-disable-line
@@ -142,6 +155,14 @@ RadiusMode.clickAnywhere = function clickAnywhere(state, e) {
   }
 
   return null;
+}
+
+RadiusMode.onTap = function onTap(state, e) {
+  return interactiveDraw(state, e, 'tap', this)
+};
+
+RadiusMode.clickAnywhere = function clickAnywhere(state, e, userType) {
+  return interactiveDraw(state, e, 'mouse', this)
 };
 
 // creates the final geojson point feature with a radius property
@@ -166,7 +187,6 @@ RadiusMode.onStop = function onStop(state) {
     // ga event action, category, label
     googleAnalytics.setEvent('data', 'circle', JSON.stringify(circleGeoJSON));
 
-    // const linedist = getDisplayMeasurements(lineGeoJson);
     const feet = (distance * 1000) * 3.28084;
     googleAnalytics.setEvent('data', 'distance', feet);
 
@@ -178,9 +198,12 @@ RadiusMode.onStop = function onStop(state) {
         coordinates: circleGeoJSON.geometry.coordinates
       },
       properties: {
-        radius: (lineDistance(lineGeoJson)).toFixed(1)
+        radiusMetric: (lineDistance(lineGeoJson)).toFixed(1),
+        radiusFeet: feet
       }
     };
+
+    // console.log('pointWithRadius', JSON.stringify(pointWithRadius))
 
     if (this.map.getLayer('circle-line')) {
       this.map.removeLayer('circle-line');
@@ -227,6 +250,7 @@ RadiusMode.onStop = function onStop(state) {
     this.map.fire('draw.create', {
       features: [pointWithRadius]
     });
+    // console.log('studycompleted', true)
     store.setStateItem('studycompleted', true);
     document.getElementById('study-complete').classList.remove('d-none');
     document.getElementById('study-progress').remove();

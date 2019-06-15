@@ -44,10 +44,13 @@ const drawControl = new MapboxDraw({
   controls: {
     rectangle: true,
     polygon: true,
-    linestring: true,
+    line_string: true,
     trash: true,
+  },
+  options: {
     touchEnabled: true,
-    keybindings: true
+    keybindings: true,
+    touchBuffer: 10
   },
   styles: drawStyles,
   modes: Object.assign({
@@ -69,8 +72,7 @@ const geocoder = new MapboxGeocoder({
 });
 
 map.on('zoomend', () => {
-  // console.log(map.getZoom())
-  if (map.getZoom() > 11.5) {
+  if (map.getZoom() > 10) {
     const circleButtonElem = document.getElementById('circle-button');
     if (circleButtonElem.classList.contains('disabled')) {
       circleButtonElem.classList.remove('disabled');
@@ -90,6 +92,8 @@ function handleAgreeClick() {
   document.getElementById('study-agreement-all').classList.add('d-none');
   document.getElementById('study-dissaggree').remove();
   store.setStateItem('study-agreement', true);
+  document.getElementById('map-action-holder').classList.remove('h-80');
+  document.getElementById('map-action-holder').classList.add('h-70');
   return null;
 }
 

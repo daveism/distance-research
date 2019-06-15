@@ -102,6 +102,18 @@
   width: 100% !important;
 }
 
+.mapboxgl-ctrl-geocoder--icon-close {
+  @media only screen and (max-width: 450px) {
+    margin-top: 3px;
+  }
+}
+
+.mapboxgl-ctrl-geocoder--icon-search {
+  @media only screen and (max-width: 450px) {
+    top: 6px;
+  }
+}
+
 .bs-tooltip-top .arrow::before, .bs-tooltip-auto[x-placement^="top"] .arrow::before {
   border-top-color: darken($body-color, 20) !important;
 }
