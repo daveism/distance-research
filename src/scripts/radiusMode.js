@@ -138,8 +138,8 @@ function interactiveDraw(state, e, userSource, self) {
 
     // make sure touch drag draws cricle too
     if (userSource === 'touchMove') {
-      state.line.removeCoordinate('1');
-      state.line.addCoordinate(1, e.lngLat.lng, e.lngLat.lat);
+      state.line.removeCoordinate('2');
+      state.line.addCoordinate(2, e.lngLat.lng, e.lngLat.lat);
       return null;
     }
 
@@ -219,7 +219,7 @@ RadiusMode.onStop = function onStop(state) {
 
     // ga event action, category, label
     googleAnalytics.setEvent('data', 'circle', JSON.stringify(circleGeoJSON));
-
+    // console.log(JSON.stringify(circleGeoJSON))
     const feet = (distance * 1000) * 3.28084;
     googleAnalytics.setEvent('data', 'distance', feet);
 
@@ -281,9 +281,9 @@ RadiusMode.onStop = function onStop(state) {
     this.map.fire('draw.create', {
       features: [pointWithRadius]
     });
-    store.setStateItem('studycompleted', true);
-    document.getElementById('study-complete').classList.remove('d-none');
-    document.getElementById('study-progress').remove();
+    // store.setStateItem('studycompleted', true);
+    // document.getElementById('study-complete').classList.remove('d-none');
+    // document.getElementById('study-progress').remove();
   } else {
     this.deleteFeature([state.line.id], { silent: true });
     this.changeMode('simple_select', {}, { silent: true });
