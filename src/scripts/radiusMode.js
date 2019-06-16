@@ -181,8 +181,20 @@ RadiusMode.onTap = function onTap(state, e) {
 
 RadiusMode.onTouchMove = function onTouchMove(state, e) {
   console.log('onTouchMove')
+  const d = new Date();
+  const n = d.getTime()
+  const lastTouchMove = state.lastTouchMove;
+  const differenceTravel = n  - lastTouchMove;
+  const seconds = Math.floor((differenceTravel) ); // / (1000)
+  console.log('seconds', seconds);
+  state.lastTouchMove = n;
+
+  console.log(n)
+
   e.preventDefault();
-  return interactiveDraw(state, e, 'touchMove', this);
+  if (seconds > 10){
+    return interactiveDraw(state, e, 'touchMove', this);
+  }
 };
 
 RadiusMode.onTouchEnd = function onTouchEnd(state, e) {
