@@ -126,13 +126,6 @@ RadiusMode.onKeyUp = function onKeyUp(state, e) {
   }
 };
 
-// function isVertex(e) {
-//   const featureTarget = e.featureTarget;
-//   if (!featureTarget) return false;
-//   if (!featureTarget.properties) return false;
-//   return featureTarget.properties.meta === Constants.meta.VERTEX;
-// }
-
 function interactiveDraw(state, e, userSource, self) {
   // this ends the drawing after the user creates a second point, triggering this.onStop
   if (state.currentVertexPosition === 1) {
@@ -142,12 +135,19 @@ function interactiveDraw(state, e, userSource, self) {
     if (userSource === 'tap') {
       coordnum = 2;
     }
+
+    // make sure touch drag draws cricle too
+    if (userSource === 'touchMove') {
+      state.line.removeCoordinate('1');
+      state.line.addCoordinate(1, e.lngLat.lng, e.lngLat.lat);
+      return null;
+    }
+
     state.line.addCoordinate(coordnum, e.lngLat.lng, e.lngLat.lat);
     return self.changeMode('simple_select', { featureIds: [state.line.id] });
   }
 
   self.updateUIClasses({ mouse: 'add' });
-  self.updateUIClasses({ touch: 'add' });
 
   state.line.updateCoordinate(state.currentVertexPosition, e.lngLat.lng, e.lngLat.lat);
   if (state.direction === 'forward') {
@@ -161,33 +161,34 @@ function interactiveDraw(state, e, userSource, self) {
 }
 
 RadiusMode.onTouchStart = function onTap(state, e) {
-  console.log('onTouchStart')
+  // Prevent the default map drag behavior.
+  e.preventDefault();
   if (state.didTouchStart || !state.isTouchMove) {
-    state.didTouchStart = true;
+    state.didTouchStart = true; // eslint-disable-line
     return interactiveDraw(state, e, 'tap', this);
   }
   return null;
 };
 
 RadiusMode.onTap = function onTap(state, e) {
-  console.log('onTap')
   if (!state.didTouchStart) {
     return interactiveDraw(state, e, 'tap', this);
   }
+  return null;
 };
 
 RadiusMode.onTouchMove = function onTouchMove(state, e) {
-  state.isTouchMove = true;
-  this.map['dragPan'].disable();
-  return state.isTouchMove;
+  state.isTouchMove = true; // eslint-disable-line
+  // Prevent the default map drag behavior.
+  e.preventDefault();
+  return interactiveDraw(state, e, 'touchMove', this);
 };
 
 RadiusMode.onTouchEnd = function onTouchMove(state, e) {
-  console.log('onTouchEnd')
-
   if (state.isTouchMove) {
-    state.isTouchMove = false;
-    this.map['dragPan'].enable();
+    state.isTouchMove = false; // eslint-disable-line
+    // Prevent the default map drag behavior.
+    e.preventDefault();
     return interactiveDraw(state, e, 'tap', this);
   }
   return null;
@@ -235,8 +236,6 @@ RadiusMode.onStop = function onStop(state) {
       }
     };
 
-    // console.log('pointWithRadius', JSON.stringify(pointWithRadius))
-
     if (this.map.getLayer('circle-line')) {
       this.map.removeLayer('circle-line');
     }
@@ -282,10 +281,9 @@ RadiusMode.onStop = function onStop(state) {
     this.map.fire('draw.create', {
       features: [pointWithRadius]
     });
-    // // console.log('studycompleted', true)
-    // store.setStateItem('studycompleted', true);
-    // document.getElementById('study-complete').classList.remove('d-none');
-    // document.getElementById('study-progress').remove();
+    store.setStateItem('studycompleted', true);
+    document.getElementById('study-complete').classList.remove('d-none');
+    document.getElementById('study-progress').remove();
   } else {
     this.deleteFeature([state.line.id], { silent: true });
     this.changeMode('simple_select', {}, { silent: true });
@@ -294,6 +292,7 @@ RadiusMode.onStop = function onStop(state) {
 
 RadiusMode.toDisplayFeatures = function toDisplayFeatures(state, geojson, display) {
   const isActiveLine = geojson.properties.id === state.line.id;
+
   geojson.properties.active = (isActiveLine) ? 'true' : 'false';  // eslint-disable-line
   if (!isActiveLine) return display(geojson);
 
@@ -338,7 +337,6 @@ RadiusMode.toDisplayFeatures = function toDisplayFeatures(state, geojson, displa
   circleFeature.properties.meta = 'radius';
 
   display(circleFeature);
-
   return null;
 };
 
