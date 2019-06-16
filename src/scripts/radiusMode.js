@@ -185,15 +185,15 @@ RadiusMode.onTouchMove = function onTouchMove(state, e) {
   const d = new Date();
   const n = d.getTime()
   const lastTouchMove = state.lastTouchMove;
-  const differenceTravel = n  - lastTouchMove;
+  const differenceTravel = n - lastTouchMove;
   const seconds = Math.floor((differenceTravel) ); // / (1000)
-  // console.log('seconds', seco nds);
+  console.log('seconds', seconds);
   state.lastTouchMove = n;
 
   // console.log(n)
 
   e.preventDefault();
-  if (seconds > .5){
+  if (seconds > 2){
     return interactiveDraw(state, e, 'touchMove', this);
   }
 };
