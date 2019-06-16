@@ -162,7 +162,7 @@ function interactiveDraw(state, e, userSource, self) {
 }
 
 RadiusMode.onTouchStart = function onTouchStart(state, e) {
-  // console.log('onTouchStart')
+  console.log('onTouchStart')
   e.preventDefault();
   if (state.didTouchStart) {
     state.didTouchStart = true; // eslint-disable-line
@@ -172,7 +172,7 @@ RadiusMode.onTouchStart = function onTouchStart(state, e) {
 };
 
 RadiusMode.onTap = function onTap(state, e) {
-  // console.log('onTap')
+  console.log('onTap')
   if (!state.didTouchStart) {
     return interactiveDraw(state, e, 'tap', this);
   }
@@ -180,13 +180,13 @@ RadiusMode.onTap = function onTap(state, e) {
 };
 
 RadiusMode.onTouchMove = function onTouchMove(state, e) {
-  // console.log('onTouchMove')
+  console.log('onTouchMove')
   e.preventDefault();
   return interactiveDraw(state, e, 'touchMove', this);
 };
 
 RadiusMode.onTouchEnd = function onTouchEnd(state, e) {
-  // console.log('onTouchEnd')
+  console.log('onTouchEnd')
   e.preventDefault();
   return interactiveDraw(state, e, 'onTouchEnd', this);
 };
@@ -199,7 +199,7 @@ RadiusMode.clickAnywhere = function clickAnywhere(state, e, userType) {
 // triggers draw.create
 RadiusMode.onStop = function onStop(state) {
   doubleClickZoom.enable(this);
-  // console.log('onStop')
+  console.log('onStop')
   this.activateUIButton();
 
   // check to see if we've deleted this feature
@@ -216,7 +216,7 @@ RadiusMode.onStop = function onStop(state) {
 
     // ga event action, category, label
     googleAnalytics.setEvent('data', 'circle', JSON.stringify(circleGeoJSON));
-    // console.log(JSON.stringify(circleGeoJSON))
+    console.log(JSON.stringify(circleGeoJSON))
     const feet = (distance * 1000) * 3.28084;
     googleAnalytics.setEvent('data', 'distance', feet);
 
