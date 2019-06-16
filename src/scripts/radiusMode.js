@@ -281,9 +281,9 @@ RadiusMode.onStop = function onStop(state) {
     this.map.fire('draw.create', {
       features: [pointWithRadius]
     });
-    // store.setStateItem('studycompleted', true);
-    // document.getElementById('study-complete').classList.remove('d-none');
-    // document.getElementById('study-progress').remove();
+    store.setStateItem('studycompleted', true);
+    document.getElementById('study-complete').classList.remove('d-none');
+    document.getElementById('study-progress').remove();
   } else {
     this.deleteFeature([state.line.id], { silent: true });
     this.changeMode('simple_select', {}, { silent: true });
