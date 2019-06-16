@@ -127,24 +127,23 @@ RadiusMode.onKeyUp = function onKeyUp(state, e) {
 };
 
 function interactiveDraw(state, e, userSource, self) {
+  // console.log( 'interactiveDraw',userSource)
+
   // this ends the drawing after the user creates a second point, triggering this.onStop
   if (state.currentVertexPosition === 1) {
     let coordnum = 0;
     // for reasons I am to lazy to figure out when a toch event is fired
     // you need an extra click or simulate an extra click to finish the circle.
     if (userSource === 'tap') {
-      state.line.removeCoordinate('2');
       coordnum = 2;
     }
 
     // make sure touch drag draws cricle too
     if (userSource === 'touchMove' || userSource === 'tapstart') {
-      // console.log(userSource)
       state.line.removeCoordinate('2');
       state.line.addCoordinate(2, e.lngLat.lng, e.lngLat.lat);
       return null;
     }
-
     state.line.addCoordinate(coordnum, e.lngLat.lng, e.lngLat.lat);
     return self.changeMode('simple_select', { featureIds: [state.line.id] });
   }
@@ -162,10 +161,10 @@ function interactiveDraw(state, e, userSource, self) {
   return null;
 }
 
-RadiusMode.onTouchStart = function onTap(state, e) {
-  // Prevent the default map drag behavior.
+RadiusMode.onTouchStart = function onTouchStart(state, e) {
+  // console.log('onTouchStart')
   e.preventDefault();
-  if (state.didTouchStart || !state.isTouchMove) {
+  if (state.didTouchStart) {
     state.didTouchStart = true; // eslint-disable-line
     return interactiveDraw(state, e, 'tapstart', this);
   }
@@ -173,6 +172,7 @@ RadiusMode.onTouchStart = function onTap(state, e) {
 };
 
 RadiusMode.onTap = function onTap(state, e) {
+  // console.log('onTap')
   if (!state.didTouchStart) {
     return interactiveDraw(state, e, 'tap', this);
   }
@@ -180,20 +180,15 @@ RadiusMode.onTap = function onTap(state, e) {
 };
 
 RadiusMode.onTouchMove = function onTouchMove(state, e) {
-  state.isTouchMove = true; // eslint-disable-line
-  // Prevent the default map drag behavior.
+  // console.log('onTouchMove')
   e.preventDefault();
   return interactiveDraw(state, e, 'touchMove', this);
 };
 
-RadiusMode.onTouchEnd = function onTouchMove(state, e) {
-  if (state.isTouchMove) {
-    state.isTouchMove = false; // eslint-disable-line
-    // Prevent the default map drag behavior.
-    e.preventDefault();
-    return interactiveDraw(state, e, 'tap', this);
-  }
-  return null;
+RadiusMode.onTouchEnd = function onTouchEnd(state, e) {
+  // console.log('onTouchEnd')
+  e.preventDefault();
+  return interactiveDraw(state, e, 'onTouchEnd', this);
 };
 
 RadiusMode.clickAnywhere = function clickAnywhere(state, e, userType) {
@@ -204,7 +199,7 @@ RadiusMode.clickAnywhere = function clickAnywhere(state, e, userType) {
 // triggers draw.create
 RadiusMode.onStop = function onStop(state) {
   doubleClickZoom.enable(this);
-
+  // console.log('onStop')
   this.activateUIButton();
 
   // check to see if we've deleted this feature
@@ -283,9 +278,9 @@ RadiusMode.onStop = function onStop(state) {
     this.map.fire('draw.create', {
       features: [pointWithRadius]
     });
-    store.setStateItem('studycompleted', true);
-    document.getElementById('study-complete').classList.remove('d-none');
-    document.getElementById('study-progress').remove();
+    // store.setStateItem('studycompleted', true);
+    // document.getElementById('study-complete').classList.remove('d-none');
+    // document.getElementById('study-progress').remove();
   } else {
     this.deleteFeature([state.line.id], { silent: true });
     this.changeMode('simple_select', {}, { silent: true });
