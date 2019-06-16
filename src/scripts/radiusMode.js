@@ -133,11 +133,12 @@ function interactiveDraw(state, e, userSource, self) {
     // for reasons I am to lazy to figure out when a toch event is fired
     // you need an extra click or simulate an extra click to finish the circle.
     if (userSource === 'tap') {
+      state.line.removeCoordinate('2');
       coordnum = 2;
     }
 
     // make sure touch drag draws cricle too
-    if (userSource === 'touchMove') {
+    if (userSource === 'touchMove' || userSource === 'tapstart') {
       console.log(userSource)
       state.line.removeCoordinate('2');
       state.line.addCoordinate(2, e.lngLat.lng, e.lngLat.lat);
@@ -166,7 +167,7 @@ RadiusMode.onTouchStart = function onTap(state, e) {
   e.preventDefault();
   if (state.didTouchStart || !state.isTouchMove) {
     state.didTouchStart = true; // eslint-disable-line
-    return interactiveDraw(state, e, 'tap', this);
+    return interactiveDraw(state, e, 'tapstart', this);
   }
   return null;
 };
