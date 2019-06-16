@@ -139,7 +139,7 @@ function interactiveDraw(state, e, userSource, self) {
 
     // make sure touch drag draws cricle too
     if (userSource === 'touchMove' || userSource === 'tapstart') {
-      console.log(userSource)
+      // console.log(userSource)
       state.line.removeCoordinate('2');
       state.line.addCoordinate(2, e.lngLat.lng, e.lngLat.lat);
       return null;
