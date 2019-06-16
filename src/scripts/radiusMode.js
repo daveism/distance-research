@@ -186,13 +186,13 @@ RadiusMode.onTouchMove = function onTouchMove(state, e) {
   const lastTouchMove = state.lastTouchMove;
   const differenceTravel = n  - lastTouchMove;
   const seconds = Math.floor((differenceTravel) ); // / (1000)
-  console.log('seconds', seconds);
+  // console.log('seconds', seco nds);
   state.lastTouchMove = n;
 
-  console.log(n)
+  // console.log(n)
 
   e.preventDefault();
-  if (seconds > 200){
+  if (seconds > 50){
     return interactiveDraw(state, e, 'touchMove', this);
   }
 };
@@ -228,7 +228,7 @@ RadiusMode.onStop = function onStop(state) {
 
     // ga event action, category, label
     googleAnalytics.setEvent('data', 'circle', JSON.stringify(circleGeoJSON));
-    console.log(JSON.stringify(circleGeoJSON))
+    // console.log(JSON.stringify(circleGeoJSON))
     const feet = (distance * 1000) * 3.28084;
     googleAnalytics.setEvent('data', 'distance', feet);
 
