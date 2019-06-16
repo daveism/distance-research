@@ -193,7 +193,7 @@ RadiusMode.onTouchMove = function onTouchMove(state, e) {
   // console.log(n)
 
   e.preventDefault();
-  if (seconds > 2){
+  if (seconds > 10){
     return interactiveDraw(state, e, 'touchMove', this);
   }
 };
