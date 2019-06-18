@@ -127,8 +127,30 @@ RadiusMode.onKeyUp = function onKeyUp(state, e) {
 };
 
 function interactiveDraw(state, e, userSource, self) {
-  // console.log( 'interactiveDraw',userSource)
+  console.log( 'interactiveDraw')
 
+  const lng = Math.abs(e.lngLat.lng)
+  const lat = Math.abs(e.lngLat.lat)
+  const diffLat = Math.abs(state.lastMoveLat) - Math.abs(lat);
+  const diffLng = Math.abs(state.lastMoveLng) - Math.abs(lng);
+  const diffToolerance =  Math.abs(0.000001);
+
+  console.log('diff diffToolerance', diffToolerance, diffLat,  diffLng)
+  console.log('diff diffLat', (diffLat < diffToolerance ) )
+  console.log('diff diffLng', (diffLng < diffToolerance ) )
+  console.log('diff both', (diffLat < diffToolerance || diffLng < diffToolerance )  )
+
+  if (userSource === 'tap' || userSource === 'onTouchStart') {
+    if (diffLat < diffToolerance && diffLng < diffToolerance ) {
+      state.lastMoveLat = lat
+      state.lastMoveLng = lng
+      return null;
+    }
+  }
+
+  state.lastMoveLat = lat
+  state.lastMoveLng = lng
+  
   // this ends the drawing after the user creates a second point, triggering this.onStop
   if (state.currentVertexPosition === 1) {
     let coordnum = 0;
@@ -173,7 +195,6 @@ RadiusMode.onTouchStart = function onTouchStart(state, e) {
 
 RadiusMode.onTap = function onTap(state, e) {
   console.log('onTap')
-  state.didTap = true; // eslint-disable-line
   if (!state.didTouchStart) {
     return interactiveDraw(state, e, 'tap', this);
   }
@@ -182,20 +203,8 @@ RadiusMode.onTap = function onTap(state, e) {
 
 RadiusMode.onTouchMove = function onTouchMove(state, e) {
   console.log('onTouchMove')
-  const d = new Date();
-  const n = d.getTime()
-  const lastTouchMove = state.lastTouchMove;
-  const differenceTravel = n - lastTouchMove;
-  const seconds = Math.floor((differenceTravel) ); // / (1000)
-  console.log('seconds', seconds);
-  state.lastTouchMove = n;
-
-  // console.log(n)
-
   e.preventDefault();
-  if (seconds > 10){
-    return interactiveDraw(state, e, 'touchMove', this);
-  }
+  return interactiveDraw(state, e, 'touchMove', this);
 };
 
 RadiusMode.onTouchEnd = function onTouchEnd(state, e) {
