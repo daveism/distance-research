@@ -187,23 +187,17 @@ function interactiveDraw(state, e, userSource, self) {
   return null;
 }
 
-// RadiusMode.onTouchStart = function onTouchStart(state, e) {
-//   console.log('onTouchStart')
-//   e.preventDefault();
-//   if (state.didTouchStart) {
-//     state.didTouchStart = true; // eslint-disable-line
-//     return interactiveDraw(state, e, 'tapstart', this);
-//   }
-//   return null;
-// };
+RadiusMode.onTouchStart = function onTouchStart(state, e) {
+  console.log('onTouchStart')
+  e.preventDefault();
+  return null;
+};
 
-// RadiusMode.onTap = function onTap(state, e) {
-//   console.log('onTap')
-//   if (!state.didTouchStart) {
-//     return interactiveDraw(state, e, 'tap', this);
-//   }
-//   return null;
-// };
+RadiusMode.onTap = function onTap(state, e) {
+  console.log('onTap')
+  e.preventDefault();
+  return null;
+};
 
 RadiusMode.onTouchMove = function onTouchMove(state, e) {
   console.log('onTouchMove')
