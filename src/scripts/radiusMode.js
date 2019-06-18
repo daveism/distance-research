@@ -12,7 +12,7 @@ const store = new Store({});
 const RadiusMode = MapboxDraw.modes.draw_line_string;
 const googleAnalytics = new GoogleAnalytics();
 
-store.setStateItem('isTouchMove', true);
+// store.setStateItem('isTouchMove', true);
 
 function createVertex(parentId, coordinates, path, selected) {
   return {
@@ -128,19 +128,19 @@ RadiusMode.onKeyUp = function onKeyUp(state, e) {
 
 function interactiveDraw(state, e, userSource, self) {
   // console.log( 'interactiveDraw')
-  // this ensures touchmove and tap work on mobile
+  // this ensures onTouchMove and tap work on mobile
   const lng = Math.abs(e.lngLat.lng);
   const lat = Math.abs(e.lngLat.lat);
   const diffLat = Math.abs(state.lastMoveLat) - Math.abs(lat);
   const diffLng = Math.abs(state.lastMoveLng) - Math.abs(lng);
   const diffToolerance = Math.abs(0.000001);
 
-  // in mboile tap and touchstart both fire on touchmove
-  // we want both touchmove and tap to work for drawing the circle
+  // in mboile tap and touchstart both fire on onTouchMove
+  // we want both onTouchMove and tap to work for drawing the circle
   // so we limit the distance so there is not a false double click
   // this also ensures double clicks are not registered on desktop and mobile
   // accidentally
-  if (userSource === 'touchMove') {
+  if (userSource === 'onTouchMove') {
     if (diffLat < diffToolerance && diffLng < diffToolerance) {
       state.lastMoveLat = lat; // eslint-disable-line
       state.lastMoveLng = lng; // eslint-disable-line
@@ -157,14 +157,14 @@ function interactiveDraw(state, e, userSource, self) {
   // this ends the drawing after the user creates a second point, triggering this.onStop
   if (state.currentVertexPosition === 1) {
     let coordnum = 0;
-    // // for reasons I am to lazy to figure out when a toch event is fired
-    // // you need an extra click or simulate an extra click to finish the circle.
-    // if (userSource === 'tap') {
-    //   coordnum = 2;
-    // }
+    // for reasons I am to lazy to figure out when a toch event is fired
+    // you need an extra click or simulate an extra click to finish the circle.
+    if (userSource === 'tap') {
+      coordnum = 2;
+    }
 
     // make sure touch drag draws cricle too
-    if (userSource === 'touchMove' || userSource === 'tapstart') {
+    if (userSource === 'onTouchMove' || userSource === 'tapstart') {
       state.line.removeCoordinate('2');
       state.line.addCoordinate(2, e.lngLat.lng, e.lngLat.lat);
       return null;
@@ -202,14 +202,14 @@ RadiusMode.onTap = function onTap(state, e) {
 RadiusMode.onTouchMove = function onTouchMove(state, e) {
   console.log('onTouchMove')
   e.preventDefault();
-  return interactiveDraw(state, e, 'touchMove', this);
+  return interactiveDraw(state, e, 'onTouchMove', this);
 };
 
-// RadiusMode.onTouchEnd = function onTouchEnd(state, e) {
-//   console.log('onTouchEnd')
-//   e.preventDefault();
-//   return interactiveDraw(state, e, 'onTouchEnd', this);
-// };
+RadiusMode.onTouchEnd = function onTouchEnd(state, e) {
+  console.log('onTouchEnd')
+  e.preventDefault();
+  return interactiveDraw(state, e, 'onTouchEnd', this);
+};
 
 RadiusMode.clickAnywhere = function clickAnywhere(state, e, userType) {
   console.log('clickAnywhere')
