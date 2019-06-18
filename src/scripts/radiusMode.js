@@ -218,6 +218,8 @@ RadiusMode.onTouchMove = function onTouchMove(state, e) {
 // };
 
 RadiusMode.clickAnywhere = function clickAnywhere(state, e, userType) {
+  console.log('clickAnywhere')
+  e.preventDefault();
   return interactiveDraw(state, e, 'mouse', this);
 };
 
