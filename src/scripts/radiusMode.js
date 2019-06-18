@@ -239,7 +239,7 @@ RadiusMode.onStop = function onStop(state) {
 
     // ga event action, category, label
     googleAnalytics.setEvent('data', 'circle', JSON.stringify(circleGeoJSON));
-    // console.log(JSON.stringify(circleGeoJSON))
+    console.log(JSON.stringify(circleGeoJSON));
     const feet = (distance * 1000) * 3.28084;
     googleAnalytics.setEvent('data', 'distance', feet);
 
