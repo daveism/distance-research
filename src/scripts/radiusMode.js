@@ -172,7 +172,7 @@ function interactiveDraw(state, e, userSource, self) {
       state.line.addCoordinate(coordnum, e.lngLat.lng, e.lngLat.lat);
       return self.changeMode('simple_select', { featureIds: [state.line.id] });
     }
-    
+
     state.line.addCoordinate(coordnum, e.lngLat.lng, e.lngLat.lat);
     return self.changeMode('simple_select', { featureIds: [state.line.id] });
   }
@@ -200,13 +200,13 @@ RadiusMode.onTouchStart = function onTouchStart(state, e) {
   return null;
 };
 
-RadiusMode.onTap = function onTap(state, e) {
-  console.log('onTap')
-  if (!state.didTouchStart) {
-    return interactiveDraw(state, e, 'tap', this);
-  }
-  return null;
-};
+// RadiusMode.onTap = function onTap(state, e) {
+//   console.log('onTap')
+//   if (!state.didTouchStart) {
+//     return interactiveDraw(state, e, 'tap', this);
+//   }
+//   return null;
+// };
 
 RadiusMode.onTouchMove = function onTouchMove(state, e) {
   console.log('onTouchMove')
