@@ -148,6 +148,8 @@ function interactiveDraw(state, e, userSource, self) {
     }
   }
  console.log('interactiveDraw userSource', userSource)
+ console.log('interactiveDraw currentVertexPosition', state.currentVertexPosition)
+
   // store last lat and long so we can ge distance
   state.lastMoveLat = lat; // eslint-disable-line
   state.lastMoveLng = lng; // eslint-disable-line
