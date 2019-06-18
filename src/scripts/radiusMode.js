@@ -140,7 +140,7 @@ function interactiveDraw(state, e, userSource, self) {
   // so we limit the distance so there is not a false double click
   // this also ensures double clicks are not registered on desktop and mobile
   // accidentally
-  if (userSource === 'onTouchMove') {
+  if (userSource === 'onTouchMove' || userSource === 'onTap') {
     if (diffLat < diffToolerance && diffLng < diffToolerance) {
       state.lastMoveLat = lat; // eslint-disable-line
       state.lastMoveLng = lng; // eslint-disable-line
