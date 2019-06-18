@@ -159,7 +159,7 @@ function interactiveDraw(state, e, userSource, self) {
     let coordnum = 0;
     // for reasons I am to lazy to figure out when a toch event is fired
     // you need an extra click or simulate an extra click to finish the circle.
-    if (userSource === 'tap') {
+    if (userSource === 'onTap') {
       coordnum = 2;
     }
 
@@ -196,6 +196,7 @@ RadiusMode.onTouchStart = function onTouchStart(state, e) {
 RadiusMode.onTap = function onTap(state, e) {
   console.log('onTap')
   e.preventDefault();
+  return interactiveDraw(state, e, 'onTap', this);
   return null;
 };
 
