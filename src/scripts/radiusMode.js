@@ -168,7 +168,11 @@ function interactiveDraw(state, e, userSource, self) {
       state.line.removeCoordinate('2');
       state.line.addCoordinate(2, e.lngLat.lng, e.lngLat.lat);
       return null;
+    } else if (userSource === 'tap')  {
+      state.line.addCoordinate(coordnum, e.lngLat.lng, e.lngLat.lat);
+      return self.changeMode('simple_select', { featureIds: [state.line.id] });
     }
+    
     state.line.addCoordinate(coordnum, e.lngLat.lng, e.lngLat.lat);
     return self.changeMode('simple_select', { featureIds: [state.line.id] });
   }
