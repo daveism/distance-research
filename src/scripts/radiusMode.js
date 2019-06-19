@@ -126,7 +126,7 @@ RadiusMode.onKeyUp = function onKeyUp(state, e) {
   }
 };
 
-function interactiveDraw(state, e, userSource, self) {
+function interactiveDraw(state, e, eventType, self) {
   // console.log( 'interactiveDraw')
   // this ensures onTouchMove and tap work on mobile
   const lng = Math.abs(e.lngLat.lng);
@@ -139,16 +139,13 @@ function interactiveDraw(state, e, userSource, self) {
   // we want both onTouchMove and tap to work for drawing the circle
   // so we limit the distance so there is not a false double click
   // this also ensures double clicks are not registered on desktop and mobile
-  // accidentally
-  if (userSource === 'onTouchMove' || userSource === 'onTap') {
+  if (eventType === 'onTouchMove' ) {
     if (diffLat < diffToolerance && diffLng < diffToolerance) {
       state.lastMoveLat = lat; // eslint-disable-line
       state.lastMoveLng = lng; // eslint-disable-line
       return null;
     }
   }
- console.log('interactiveDraw userSource', userSource)
- console.log('interactiveDraw currentVertexPosition', state.currentVertexPosition)
 
   // store last lat and long so we can ge distance
   state.lastMoveLat = lat; // eslint-disable-line
@@ -157,16 +154,12 @@ function interactiveDraw(state, e, userSource, self) {
   // this ends the drawing after the user creates a second point, triggering this.onStop
   if (state.currentVertexPosition === 1) {
     let coordnum = 0;
-    // for reasons I am to lazy to figure out when a toch event is fired
-    // you need an extra click or simulate an extra click to finish the circle.
-    if (userSource === 'onTap') {
-      coordnum = 2;
-    }
 
-    // make sure touch drag draws cricle too
-    if (userSource === 'onTouchMove') {
-      state.line.removeCoordinate('2');
-      state.line.addCoordinate(2, e.lngLat.lng, e.lngLat.lat);
+    // make sure touch drag draws circle too
+    if (eventType === 'onTouchMove') {
+      coordnum = 2;
+      state.line.removeCoordinate(`${coordnum}`);
+      state.line.addCoordinate(coordnum, e.lngLat.lng, e.lngLat.lat);
       return null;
     }
 
@@ -188,16 +181,39 @@ function interactiveDraw(state, e, userSource, self) {
 }
 
 RadiusMode.onTouchStart = function onTouchStart(state, e) {
-  console.log('onTouchStart')
+  //   console.log('onTouchStart')
   e.preventDefault();
   return null;
 };
 
+function tapDraw(state, e, self) {
+  if (state.currentVertexPosition === 1) {
+    state.line.addCoordinate(2, e.lngLat.lng, e.lngLat.lat);
+    const lineGeoJson = state.line.toGeoJSON();
+    const startPoint = lineGeoJson.geometry.coordinates[0];
+    const distance = lineDistance(lineGeoJson)
+
+    if (distance < 1) {
+      return null;
+    }
+
+    state.line.updateCoordinate(2, e.lngLat.lng, e.lngLat.lat);
+    return self.changeMode('simple_select', { featureIds: [state.line.id] });
+  }
+
+  self.updateUIClasses({ mouse: 'add' });
+  state.line.updateCoordinate(0, e.lngLat.lng, e.lngLat.lat);
+  state.currentVertexPosition += 1; // eslint-disable-line
+  state.line.addCoordinate(0, e.lngLat.lng, e.lngLat.lat);
+
+  return null;
+}
+
 RadiusMode.onTap = function onTap(state, e) {
   console.log('onTap')
   e.preventDefault();
-  return interactiveDraw(state, e, 'onTap', this);
-  return null;
+  tapDraw(state, e, this)
+
 };
 
 RadiusMode.onTouchMove = function onTouchMove(state, e) {
@@ -212,7 +228,7 @@ RadiusMode.onTouchEnd = function onTouchEnd(state, e) {
   return interactiveDraw(state, e, 'onTouchEnd', this);
 };
 
-RadiusMode.clickAnywhere = function clickAnywhere(state, e, userType) {
+RadiusMode.clickAnywhere = function clickAnywhere(state, e) {
   console.log('clickAnywhere')
   e.preventDefault();
   return interactiveDraw(state, e, 'mouse', this);
