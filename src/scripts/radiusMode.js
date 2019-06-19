@@ -69,6 +69,44 @@ function createGeoJSONCircle(center, radiusInKm, parentId, points = 64) {
   };
 }
 
+function createGeoJSONCircleTap(center, radiusInKm, parentId, points = 64) {
+  const coords = {
+    latitude: center[1],
+    longitude: center[0]
+  };
+
+  const km = radiusInKm;
+
+  const ret = [];
+  const distanceX = km / (111.320 * Math.cos((coords.latitude * Math.PI) / 180));
+  const distanceY = km / 110.574;
+
+  let theta;
+  let x;
+  let y;
+  for (let i = 0; i < points; i += 1) {
+    theta = (i / points) * (2 * Math.PI);
+    x = distanceX * Math.cos(theta);
+    y = distanceY * Math.sin(theta);
+
+    ret.push([coords.longitude + x, coords.latitude + y]);
+  }
+  ret.push(ret[0]);
+
+  return {
+    type: 'Feature',
+    geometry: {
+      type: 'Polygon',
+      coordinates: [ret]
+    },
+    properties: {
+      parent: parentId,
+      active: 'true'
+    }
+  };
+}
+
+
 function getDisplayMeasurements(feature) {
   // should log both metric and standard display strings for the current drawn feature
   // metric calculation
@@ -187,24 +225,31 @@ RadiusMode.onTouchStart = function onTouchStart(state, e) {
 };
 
 function tapDraw(state, e, self) {
-  if (state.currentVertexPosition === 1) {
-    state.line.addCoordinate(2, e.lngLat.lng, e.lngLat.lat);
-    const lineGeoJson = state.line.toGeoJSON();
+  if (state.tapcurrentVertexPosition === 1) {
+    state.tapline.addCoordinate(2, e.lngLat.lng, e.lngLat.lat);
+    const lineGeoJson = state.tapline.toGeoJSON();
     const startPoint = lineGeoJson.geometry.coordinates[0];
     const distance = lineDistance(lineGeoJson)
-
-    if (distance < 1) {
+    console.log('tapDraw', distance)
+    if (distance < .1) {
       return null;
     }
 
-    state.line.updateCoordinate(2, e.lngLat.lng, e.lngLat.lat);
+    state.tapline.updateCoordinate(2, e.lngLat.lng, e.lngLat.lat);
+    state.line = state.tapline;
+    state.currentVertexPosition = state.tapcurrentVertexPosition;
     return self.changeMode('simple_select', { featureIds: [state.line.id] });
   }
 
+  state.tapline = state.line;
+  state.tapcurrentVertexPosition = 0;
+  state.tapline.removeCoordinate('0');
+  state.tapline.removeCoordinate('1');
+  state.tapline.removeCoordinate('2');
   self.updateUIClasses({ mouse: 'add' });
-  state.line.updateCoordinate(0, e.lngLat.lng, e.lngLat.lat);
-  state.currentVertexPosition += 1; // eslint-disable-line
-  state.line.addCoordinate(0, e.lngLat.lng, e.lngLat.lat);
+  state.tapline.updateCoordinate(0, e.lngLat.lng, e.lngLat.lat);
+  state.tapcurrentVertexPosition += 1; // eslint-disable-line
+  state.tapline.addCoordinate(0, e.lngLat.lng, e.lngLat.lat);
 
   return null;
 }
@@ -212,12 +257,13 @@ function tapDraw(state, e, self) {
 RadiusMode.onTap = function onTap(state, e) {
   console.log('onTap')
   e.preventDefault();
-  tapDraw(state, e, this)
-
+  tapDraw(state, e, this);
+  state.didOnTouchMove = false;
 };
 
 RadiusMode.onTouchMove = function onTouchMove(state, e) {
   console.log('onTouchMove')
+  state.didOnTouchMove = true;
   e.preventDefault();
   return interactiveDraw(state, e, 'onTouchMove', this);
 };
@@ -256,6 +302,8 @@ RadiusMode.onStop = function onStop(state) {
     // ga event action, category, label
     googleAnalytics.setEvent('data', 'circle', JSON.stringify(circleGeoJSON));
     console.log(JSON.stringify(circleGeoJSON));
+    console.log(JSON.stringify(lineGeoJson));
+
     const feet = (distance * 1000) * 3.28084;
     googleAnalytics.setEvent('data', 'distance', feet);
 
