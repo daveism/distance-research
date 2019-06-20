@@ -69,44 +69,6 @@ function createGeoJSONCircle(center, radiusInKm, parentId, points = 64) {
   };
 }
 
-function createGeoJSONCircleTap(center, radiusInKm, parentId, points = 64) {
-  const coords = {
-    latitude: center[1],
-    longitude: center[0]
-  };
-
-  const km = radiusInKm;
-
-  const ret = [];
-  const distanceX = km / (111.320 * Math.cos((coords.latitude * Math.PI) / 180));
-  const distanceY = km / 110.574;
-
-  let theta;
-  let x;
-  let y;
-  for (let i = 0; i < points; i += 1) {
-    theta = (i / points) * (2 * Math.PI);
-    x = distanceX * Math.cos(theta);
-    y = distanceY * Math.sin(theta);
-
-    ret.push([coords.longitude + x, coords.latitude + y]);
-  }
-  ret.push(ret[0]);
-
-  return {
-    type: 'Feature',
-    geometry: {
-      type: 'Polygon',
-      coordinates: [ret]
-    },
-    properties: {
-      parent: parentId,
-      active: 'true'
-    }
-  };
-}
-
-
 function getDisplayMeasurements(feature) {
   // should log both metric and standard display strings for the current drawn feature
   // metric calculation
@@ -167,20 +129,20 @@ RadiusMode.onKeyUp = function onKeyUp(state, e) {
 // for mobile touch move in mobile there is no click
 // since it would provide no feedback to user
 function onTouchMoveDraw(state, e) {
-    if (state.currentVertexPosition === 1) {
-      state.line.removeCoordinate('2');
-      state.line.addCoordinate(2, e.lngLat.lng, e.lngLat.lat);
-      return null;
-    }
-
-    state.line.updateCoordinate(state.currentVertexPosition, e.lngLat.lng, e.lngLat.lat);
-    if (state.direction === 'forward') {
-      state.currentVertexPosition += 1; // eslint-disable-line
-      state.line.updateCoordinate(state.currentVertexPosition, e.lngLat.lng, e.lngLat.lat);
-    } else {
-      state.line.addCoordinate(0, e.lngLat.lng, e.lngLat.lat);
-    }
+  if (state.currentVertexPosition === 1) {
+    state.line.removeCoordinate('2');
+    state.line.addCoordinate(2, e.lngLat.lng, e.lngLat.lat);
     return null;
+  }
+
+  state.line.updateCoordinate(state.currentVertexPosition, e.lngLat.lng, e.lngLat.lat);
+  if (state.direction === 'forward') {
+    state.currentVertexPosition += 1; // eslint-disable-line
+    state.line.updateCoordinate(state.currentVertexPosition, e.lngLat.lng, e.lngLat.lat);
+  } else {
+    state.line.addCoordinate(0, e.lngLat.lng, e.lngLat.lat);
+  }
+  return null;
 }
 
 // for desktop clicks
@@ -210,9 +172,8 @@ RadiusMode.onTouchStart = function onTouchStart(state, e) {
 
 RadiusMode.onTouchMove = function onTouchMove(state, e) {
   // console.log('onTouchMove')
-  state.didOnTouchMove = true;
   e.preventDefault();
-  return onTouchMoveDraw(state, e)
+  return onTouchMoveDraw(state, e);
 };
 
 RadiusMode.onTouchEnd = function onTouchEnd(state, e) {
@@ -252,13 +213,11 @@ RadiusMode.onStop = function onStop(state) {
     store.setStateItem('distancefeet', feet);
 
     // ga event action, category, label
-    // googleAnalytics.setEvent('data', 'circle', JSON.stringify(circleGeoJSON));
-    // googleAnalytics.setEvent('data', 'distancekm', feet);
-    // googleAnalytics.setEvent('data', 'distancefeet', feet);
-    // store.setStateItem('studycompleted', true);
-    // document.getElementById('study-complete').classList.remove('d-none');
-    // document.getElementById('study-progress').remove();
-  
+    googleAnalytics.setEvent('data', 'circle-presubmit', JSON.stringify(circleGeoJSON));
+    googleAnalytics.setEvent('data', 'line-presubmit', JSON.stringify(lineGeoJson));
+    googleAnalytics.setEvent('data', 'distancekm-presubmit', feet);
+    googleAnalytics.setEvent('data', 'distancefeet-presubmit', feet);
+
     // reconfigure the geojson line into a geojson point with a radius property
     const pointWithRadius = {
       type: 'Feature',
