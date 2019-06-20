@@ -164,44 +164,29 @@ RadiusMode.onKeyUp = function onKeyUp(state, e) {
   }
 };
 
+// for mobile touch move in mobile there is no click
+// since it would provide no feedback to user
+function onTouchMoveDraw(state, e) {
+    if (state.currentVertexPosition === 1) {
+      state.line.removeCoordinate('2');
+      state.line.addCoordinate(2, e.lngLat.lng, e.lngLat.lat);
+      return null;
+    }
+
+    state.line.updateCoordinate(state.currentVertexPosition, e.lngLat.lng, e.lngLat.lat);
+    if (state.direction === 'forward') {
+      state.currentVertexPosition += 1; // eslint-disable-line
+      state.line.updateCoordinate(state.currentVertexPosition, e.lngLat.lng, e.lngLat.lat);
+    } else {
+      state.line.addCoordinate(0, e.lngLat.lng, e.lngLat.lat);
+    }
+    return null;
+}
+
+// for desktop clicks
 function interactiveDraw(state, e, eventType, self) {
-  // console.log( 'interactiveDraw')
-  // this ensures onTouchMove and tap work on mobile
-  const lng = Math.abs(e.lngLat.lng);
-  const lat = Math.abs(e.lngLat.lat);
-  const diffLat = Math.abs(state.lastMoveLat) - Math.abs(lat);
-  const diffLng = Math.abs(state.lastMoveLng) - Math.abs(lng);
-  const diffToolerance = Math.abs(0.000001);
-
-  // in mboile tap and touchstart both fire on onTouchMove
-  // we want both onTouchMove and tap to work for drawing the circle
-  // so we limit the distance so there is not a false double click
-  // this also ensures double clicks are not registered on desktop and mobile
-  if (eventType === 'onTouchMove' ) {
-    if (diffLat < diffToolerance && diffLng < diffToolerance) {
-      state.lastMoveLat = lat; // eslint-disable-line
-      state.lastMoveLng = lng; // eslint-disable-line
-      return null;
-    }
-  }
-
-  // store last lat and long so we can ge distance
-  state.lastMoveLat = lat; // eslint-disable-line
-  state.lastMoveLng = lng; // eslint-disable-line
-
-  // this ends the drawing after the user creates a second point, triggering this.onStop
   if (state.currentVertexPosition === 1) {
-    let coordnum = 0;
-
-    // make sure touch drag draws circle too
-    if (eventType === 'onTouchMove') {
-      coordnum = 2;
-      state.line.removeCoordinate(`${coordnum}`);
-      state.line.addCoordinate(coordnum, e.lngLat.lng, e.lngLat.lat);
-      return null;
-    }
-
-    state.line.addCoordinate(coordnum, e.lngLat.lng, e.lngLat.lat);
+    state.line.addCoordinate(0, e.lngLat.lng, e.lngLat.lat);
     return self.changeMode('simple_select', { featureIds: [state.line.id] });
   }
 
@@ -219,63 +204,25 @@ function interactiveDraw(state, e, eventType, self) {
 }
 
 RadiusMode.onTouchStart = function onTouchStart(state, e) {
-  //   console.log('onTouchStart')
   e.preventDefault();
   return null;
-};
-
-function tapDraw(state, e, self) {
-  if (state.tapcurrentVertexPosition === 1) {
-    state.tapline.addCoordinate(2, e.lngLat.lng, e.lngLat.lat);
-    const lineGeoJson = state.tapline.toGeoJSON();
-    const startPoint = lineGeoJson.geometry.coordinates[0];
-    const distance = lineDistance(lineGeoJson)
-    console.log('tapDraw', distance)
-    if (distance < .1) {
-      return null;
-    }
-
-    state.tapline.updateCoordinate(2, e.lngLat.lng, e.lngLat.lat);
-    state.line = state.tapline;
-    state.currentVertexPosition = state.tapcurrentVertexPosition;
-    return self.changeMode('simple_select', { featureIds: [state.line.id] });
-  }
-
-  state.tapline = state.line;
-  state.tapcurrentVertexPosition = 0;
-  state.tapline.removeCoordinate('0');
-  state.tapline.removeCoordinate('1');
-  state.tapline.removeCoordinate('2');
-  self.updateUIClasses({ mouse: 'add' });
-  state.tapline.updateCoordinate(0, e.lngLat.lng, e.lngLat.lat);
-  state.tapcurrentVertexPosition += 1; // eslint-disable-line
-  state.tapline.addCoordinate(0, e.lngLat.lng, e.lngLat.lat);
-
-  return null;
-}
-
-RadiusMode.onTap = function onTap(state, e) {
-  console.log('onTap')
-  e.preventDefault();
-  tapDraw(state, e, this);
-  state.didOnTouchMove = false;
 };
 
 RadiusMode.onTouchMove = function onTouchMove(state, e) {
-  console.log('onTouchMove')
+  // console.log('onTouchMove')
   state.didOnTouchMove = true;
   e.preventDefault();
-  return interactiveDraw(state, e, 'onTouchMove', this);
+  return onTouchMoveDraw(state, e)
 };
 
 RadiusMode.onTouchEnd = function onTouchEnd(state, e) {
-  console.log('onTouchEnd')
+  // console.log('onTouchEnd')
   e.preventDefault();
   return interactiveDraw(state, e, 'onTouchEnd', this);
 };
 
 RadiusMode.clickAnywhere = function clickAnywhere(state, e) {
-  console.log('clickAnywhere')
+  // console.log('clickAnywhere')
   e.preventDefault();
   return interactiveDraw(state, e, 'mouse', this);
 };
@@ -298,15 +245,20 @@ RadiusMode.onStop = function onStop(state) {
     const distance = lineDistance(lineGeoJson);
 
     const circleGeoJSON = createGeoJSONCircle(startPoint, distance, null, 32);
+    const feet = (distance * 1000) * 3.28084;
+    store.setStateItem('circle', JSON.stringify(circleGeoJSON));
+    store.setStateItem('line', JSON.stringify(lineGeoJson));
+    store.setStateItem('distancekm', distance);
+    store.setStateItem('distancefeet', feet);
 
     // ga event action, category, label
-    googleAnalytics.setEvent('data', 'circle', JSON.stringify(circleGeoJSON));
-    console.log(JSON.stringify(circleGeoJSON));
-    console.log(JSON.stringify(lineGeoJson));
-
-    const feet = (distance * 1000) * 3.28084;
-    googleAnalytics.setEvent('data', 'distance', feet);
-
+    // googleAnalytics.setEvent('data', 'circle', JSON.stringify(circleGeoJSON));
+    // googleAnalytics.setEvent('data', 'distancekm', feet);
+    // googleAnalytics.setEvent('data', 'distancefeet', feet);
+    // store.setStateItem('studycompleted', true);
+    // document.getElementById('study-complete').classList.remove('d-none');
+    // document.getElementById('study-progress').remove();
+  
     // reconfigure the geojson line into a geojson point with a radius property
     const pointWithRadius = {
       type: 'Feature',
@@ -365,9 +317,6 @@ RadiusMode.onStop = function onStop(state) {
     this.map.fire('draw.create', {
       features: [pointWithRadius]
     });
-    // store.setStateItem('studycompleted', true);
-    // document.getElementById('study-complete').classList.remove('d-none');
-    // document.getElementById('study-progress').remove();
   } else {
     this.deleteFeature([state.line.id], { silent: true });
     this.changeMode('simple_select', {}, { silent: true });
