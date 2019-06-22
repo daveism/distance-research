@@ -39,13 +39,55 @@ html, body {
   @include border-radius($default-radius, $default-radius);
 }
 
+.start-height-actions, .start-height-map {
+  height: 90% !important;
+}
+
+.step-height-actions, .step-height-map {
+  height: 90% !important;
+}
+
+.start-height-actions {
+  @media only screen and (max-width: 768px) {
+    height: 70% !important;
+    max-height: 70% !important;
+  }
+}
+
+.start-height-map {
+  @media only screen and (max-width: 768px) {
+    height: 30% !important;
+  }
+}
+
+.step-height-actions {
+  @media only screen and (max-width: 768px) {
+    height: 30% !important;
+  }
+}
+
+.step-height-map {
+  @media only screen and (max-width: 768px) {
+    height: 70% !important;
+  }
+}
+
 #map-action-holder, #map-holder {
   margin-top: 24px !important;
+  @media only screen and (max-width: 768px) {
+    margin-top: 12px !important;
+  }
+}
+
+#map-action-holder {
+  @media only screen and (max-width: 768px) {
+    flex: 1 !important;
+  }
 }
 
 #map-holder {
-  @media only screen and (max-width: 600px) {
-    margin-top: 48px !important;
+  @media only screen and (max-width: 768px) {
+    margin-top: 12px !important;
   }
 }
 .steps {
@@ -54,17 +96,66 @@ html, body {
 
 .step-title {
   font-size: 24px;
+  @media only screen and (max-width: 768px) {
+    font-size: 18px;
+  }
   font-weight: 700;
   &.disabled {
     color: darken($body-color, 20) !important;
   }
 }
 
+#step-1, #step-2, #step-3 {
+  @media only screen and (max-width: 768px) {
+    padding-top: .5rem !important;
+  }
+}
+
 .step-directions {
   font-size: 16px;
+  @media only screen and (max-width: 768px) {
+    font-size: 14px;
+  }
   font-weight: 500;
   &.disabled {
     color: darken($body-color, 20) !important;
+  }
+}
+
+.step-not-vis {
+  @media only screen and (max-width: 768px) {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
+
+.step-button {
+  @media only screen and (max-width: 768px) {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+#circle-button2 {
+  display: none !important;
+  background-color: lighten($body-background-color, 12) !important;
+  border-color: lighten($body-background-color, 12) !important;
+  color: $body-color !important;
+  @media only screen and (max-width: 768px) {
+    display: block !important;
+  }
+}
+
+#submit-button {
+  font-weight: 700 !important;
+  text-align: center !important;
+}
+
+#submit-button, #circle-button2 {
+  @media only screen and (max-width: 768px) {
+    width: 45% !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
   }
 }
 
@@ -72,6 +163,10 @@ html, body {
   padding-top: 12px;
   font-size: 14px;
   font-weight: 200;
+  @media only screen and (max-width: 768px) {
+    padding-top: 6px;
+    font-size: 12px;
+  }
   &.disabled {
     color: darken($body-color, 20) !important;
   }

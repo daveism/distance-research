@@ -97,8 +97,15 @@ function handleAgreeClick() {
   document.getElementById('study-agreement-all').classList.add('d-none');
   document.getElementById('study-dissaggree').remove();
   store.setStateItem('study-agreement', true);
-  document.getElementById('map-action-holder').classList.remove('h-80');
-  document.getElementById('map-action-holder').classList.add('h-70');
+  // document.getElementById('map-action-holder').classList.remove('h-80');
+  // document.getElementById('map-action-holder').classList.add('h-70');
+
+  document.getElementById('map-action-holder').classList.remove('start-height-actions');
+  document.getElementById('map-holder').classList.remove('start-height-map');
+
+  document.getElementById('map-action-holder').classList.add('step-height-actions');
+  document.getElementById('map-holder').classList.add('step-height-map');
+  map.resize();
   // ga event action, category, label
   googleAnalytics.setEvent('data', 'study-agreement', true);
   return null;
@@ -169,7 +176,18 @@ function handleDrawButtonClick(e) {
   const submitButtonElem = document.getElementById('submit-button');
   if (submitButtonElem) {
     submitButtonElem.classList.remove('disabled');
+    submitButtonElem.classList.remove('disabled');
+
+    document.getElementById('step-2').classList.add('step-not-vis');
+    document.getElementById('step-3').classList.remove('step-not-vis');
   }
+  
+  const circle2ButtonElem = document.getElementById('circle-button2')
+  if (circle2ButtonElem) {
+    circle2ButtonElem.classList.remove('disabled');
+  }
+
+
   return null;
 }
 
@@ -245,6 +263,10 @@ geocoder.on('result', (e) => {
     $('#circle-button').tooltip('dispose');
     document.getElementById('step2-title').classList.remove('disabled');
     document.getElementById('step2-directions').classList.remove('disabled');
+
+    document.getElementById('step-1').classList.add('step-not-vis');
+    document.getElementById('step-2').classList.remove('step-not-vis');
+
   }
 });
 
@@ -252,10 +274,17 @@ const geocodeElem = document.getElementById('geocoder');
 if (geocodeElem) {
   geocodeElem.appendChild(geocoder.onAdd(map));
 }
+
 const drawCircleElement = document.querySelector('.btn-draw-circle');
 if (drawCircleElement) {
   drawCircleElement.addEventListener('click', handleDrawButtonClick);
 }
+
+const reDrawCircleElement = document.querySelector('.btn-redraw-circle');
+if (reDrawCircleElement) {
+  reDrawCircleElement.addEventListener('click', handleDrawButtonClick);
+}
+
 
 function handleSubmitButtonClick(e) {
   const submitButtonElem = document.getElementById('submit-button');
