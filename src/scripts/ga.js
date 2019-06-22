@@ -1,6 +1,7 @@
 import { Store } from './store';
 
 const store = new Store({});
+const datapi = 'https://script.google.com/macros/s/AKfycbyn02FKtVokS_2GZlGtVWRHJ7OfEHn7YHHgGmdWZNE7M8MGmH4/exec';
 
 export class GoogleAnalytics {
   constructor() {
@@ -8,12 +9,28 @@ export class GoogleAnalytics {
   }
 
   setEvent(action = '', category = '', label = '', value = 0) {
+    const uuid = store.getStateItem('uuid');
+    const date = new Date().toISOString();
+    const data = label;
+
     const fooObj = this.foo; // eslint-disable-line
-    gtag('event', store.getStateItem('uuid'), {  // eslint-disable-line
+    gtag('event', uuid, {  // eslint-disable-line
       event_category: category,
       event_label: label,
       value: `${value}`,
-      uuid: store.getStateItem('uuid')
+      uuid
     });
+
+    // since FF could be blocking ga writing data here as backup
+    const jsondata = {
+      uuid,
+      category,
+      data,
+      date
+    };
+
+    const dataAPIURL = new URL(datapi);
+    dataAPIURL.search = new URLSearchParams(jsondata);
+    fetch(dataAPIURL);
   }
 }

@@ -13,6 +13,7 @@ import { GoogleAnalytics } from './ga';
 const store = new Store({});
 const googleAnalytics = new GoogleAnalytics();
 
+
 // Kicks off the process of finding <i> tags and replacing with <svg>
 // addes support for fontawesome
 library.add(fas, far);
@@ -21,6 +22,9 @@ dom.watch();
 const urlString = window.location.href;
 const url = new URL(urlString);
 const userType = url.searchParams.get('userType');
+
+// ga event action, category, label
+googleAnalytics.setEvent('data', 'study started', 'true');
 
 // ga event action, category, label
 googleAnalytics.setEvent('data', 'userType', userType);
@@ -37,6 +41,7 @@ const map = new mapboxgl.Map({
   touchEnabled: true,
   keybindings: true
 });
+
 
 // setup map
 const drawControl = new MapboxDraw({
@@ -94,6 +99,8 @@ function handleAgreeClick() {
   store.setStateItem('study-agreement', true);
   document.getElementById('map-action-holder').classList.remove('h-80');
   document.getElementById('map-action-holder').classList.add('h-70');
+  // ga event action, category, label
+  googleAnalytics.setEvent('data', 'study-agreement', true);
   return null;
 }
 
@@ -103,6 +110,9 @@ function handleDissagreeClick() {
   document.getElementById('study-agreement-all').classList.add('d-none');
   document.getElementById('study-progress').remove();
   store.setStateItem('study-agreement', false);
+  // ga event action, category, label
+  googleAnalytics.setEvent('data', 'study-agreement', false);
+
   return null;
 }
 
@@ -265,15 +275,18 @@ function handleSubmitButtonClick(e) {
     const distancefeet = store.getStateItem('distancefeet');
 
     // ga event action, category, label
-    googleAnalytics.setEvent('data', 'circle', circle);
-    googleAnalytics.setEvent('data', 'line', line);
-    googleAnalytics.setEvent('data', 'distancekm', distancekm);
-    googleAnalytics.setEvent('data', 'distancefeet', distancefeet);
+    googleAnalytics.setEvent('data', 'circle-submitted', circle);
+    googleAnalytics.setEvent('data', 'line-submitted', line);
+    googleAnalytics.setEvent('data', 'distancekm-submitted', distancekm);
+    googleAnalytics.setEvent('data', 'distancefeet-submitted', distancefeet);
 
     // end study
     document.getElementById('study-complete').classList.remove('d-none');
     document.getElementById('study-progress').remove();
     store.setStateItem('studycompleted', true);
+
+    // ga event action, category, label
+    googleAnalytics.setEvent('data', 'studycompleted', true);
   }
   return null;
 }
