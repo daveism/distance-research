@@ -13,7 +13,6 @@ import { GoogleAnalytics } from './ga';
 const store = new Store({});
 const googleAnalytics = new GoogleAnalytics();
 
-
 // Kicks off the process of finding <i> tags and replacing with <svg>
 // addes support for fontawesome
 library.add(fas, far);

@@ -217,6 +217,19 @@ RadiusMode.onStop = function onStop(state) {
     googleAnalytics.setEvent('data', 'line-presubmit', JSON.stringify(lineGeoJson));
     googleAnalytics.setEvent('data', 'distancekm-presubmit', distance);
     googleAnalytics.setEvent('data', 'distancefeet-presubmit', feet);
+    const innerWidth = window.innerWidth; // eslint-disable-line
+    const innerHeight = window.innerHeight; // eslint-disable-line
+    const availWidth = window.screen.availWidth; // eslint-disable-line
+    const availHeight = window.screen.availHeight; // eslint-disable-line
+    const heightJSON = {
+      innerWidth,
+      innerHeight,
+      availWidth,
+      availHeight
+    };
+
+    googleAnalytics.setEvent('data', 'presubmit-screen', JSON.stringify(heightJSON));
+    googleAnalytics.setEvent('data', 'presubmit-zoom', this.map.getZoom());
 
     const submitButtonElem = document.getElementById('submit-button');
     if (submitButtonElem) {
