@@ -215,7 +215,7 @@ RadiusMode.onStop = function onStop(state) {
     // ga event action, category, label
     googleAnalytics.setEvent('data', 'circle-presubmit', JSON.stringify(circleGeoJSON));
     googleAnalytics.setEvent('data', 'line-presubmit', JSON.stringify(lineGeoJson));
-    googleAnalytics.setEvent('data', 'distancekm-presubmit', feet);
+    googleAnalytics.setEvent('data', 'distancekm-presubmit', distance);
     googleAnalytics.setEvent('data', 'distancefeet-presubmit', feet);
 
     const submitButtonElem = document.getElementById('submit-button');
