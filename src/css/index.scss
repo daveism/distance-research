@@ -229,6 +229,9 @@ html, body {
   @media only screen and (max-width: 768px) {
     display: flex !important;
     font-size: 22px;
+    @media only screen and (max-height: 361px) {
+      font-size: 18px;
+    }
     padding-left: 6px !important;
     padding-right: 6px !important;
     align-self: center !important;

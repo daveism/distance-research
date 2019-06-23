@@ -144,17 +144,17 @@ function uuid() {
 }
 
 function handleDrawButtonClick(e) {
-  const circleButtonElem = document.getElementById('circle-button');
+  const circleButtonElem = document.getElementById(`${e.target.id}`);
   if (circleButtonElem) {
     if (circleButtonElem.classList.contains('disabled')) {
-      $('#circle-button2').tooltip({ trigger: 'hover focus' });
-      $('#circle-button2').tooltip('show');
+      $(`#${e.target.id}`).tooltip({ trigger: 'hover focus' });
+      $(`#${e.target.id}`).tooltip('show');
       return null;
     } else { // eslint-disable-line
-      $('#circle-button2').tooltip({ trigger: 'manual' });
-      $('#circle-button2').tooltip('hide');
-      $('#circle-button2').tooltip('disable');
-      $('#circle-button2').tooltip('dispose');
+      $(`#${e.target.id}`).tooltip({ trigger: 'manual' });
+      $(`#${e.target.id}`).tooltip('hide');
+      $(`#${e.target.id}`).tooltip('disable');
+      $(`#${e.target.id}`).tooltip('dispose');
     }
   }
 
@@ -258,7 +258,7 @@ if (geocodeElem) {
   geocodeElem.appendChild(geocoder.onAdd(map));
 
   geocodeElem.addEventListener('touchstart', (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     geocodeElem.classList.remove('expand');
     geocodeElem.classList.add('expand');
   });
@@ -309,9 +309,11 @@ if (stepNav1Elem) {
 const mainContentElem = document.getElementById('main-content'); // eslint-disable-line
 if (mainContentElem) {
   mainContentElem.addEventListener('click', (e) => {
-    const geocodeElem = document.getElementById('geocoder'); // eslint-disable-line
-    if (geocodeElem) {
-      geocodeElem.classList.remove('expand');
+    if (!e.target.classList.contains('mapboxgl-ctrl-geocoder--input')) {
+      const geocodeElem = document.getElementById('geocoder'); // eslint-disable-line
+      if (geocodeElem) {
+        geocodeElem.classList.remove('expand');
+      }
     }
   });
 }

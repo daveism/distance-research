@@ -230,6 +230,9 @@ RadiusMode.onStop = function onStop(state) {
     const circle2ButtonElem = document.getElementById('circle-button2');
     if (circle2ButtonElem) {
       circle2ButtonElem.classList.remove('disabled');
+      $('#circle-button2').tooltip('hide');
+      $('#circle-button2').tooltip('disable');
+      $('#circle-button2').tooltip('dispose');
     }
 
     // reconfigure the geojson line into a geojson point with a radius property
