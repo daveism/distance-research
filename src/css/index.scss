@@ -62,13 +62,13 @@ html, body {
 
 .step-height-actions {
   @media only screen and (max-width: 768px) {
-    height: 30% !important;
+    height: 35% !important;
   }
 }
 
 .step-height-map {
   @media only screen and (max-width: 768px) {
-    height: 65% !important;
+    height: 60% !important;
   }
 }
 
@@ -82,6 +82,7 @@ html, body {
 #map-action-holder {
   @media only screen and (max-width: 768px) {
     flex: 1 !important;
+    padding-bottom: 12px !important;
   }
 }
 
@@ -91,6 +92,11 @@ html, body {
     padding-bottom: 12px !important;
   }
 }
+
+#geocoder {
+  width: 100% !important;
+}
+
 .steps {
   padding-top: 0px !important;
 }
@@ -131,7 +137,7 @@ html, body {
 
 #step-1, #step-2, #step-3 {
   @media only screen and (max-width: 768px) {
-    padding-top: .5rem !important;
+    padding-top: 0rem !important;
   }
 }
 
@@ -162,10 +168,11 @@ html, body {
 
 .step-nav {
   display: none !important;
+  cursor: pointer;
   @media only screen and (max-width: 768px) {
     display: flex !important;
     justify-content: space-around;
-    padding-bottom: 6px !important;
+    padding-bottom: 12px !important;
     color: darken($body-color, 25) !important;
     .active {
       font-weight: 800 !important;
@@ -183,7 +190,8 @@ html, body {
     font-size: 22px;
     padding-left: 6px !important;
     padding-right: 6px !important;
-    align-self: center;
+    align-self: center !important;
+    justify-content: center !important;
     width: 33.3% !important;
     height: 100% !important;
   }
