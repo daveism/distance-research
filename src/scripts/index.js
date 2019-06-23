@@ -256,6 +256,19 @@ geocoder.on('result', (e) => {
 const geocodeElem = document.getElementById('geocoder');
 if (geocodeElem) {
   geocodeElem.appendChild(geocoder.onAdd(map));
+
+  geocodeElem.addEventListener('touchstart', (e) => {
+    geocodeElem.classList.remove('expand');
+    geocodeElem.classList.add('expand');
+  });
+}
+
+const suggestionsElem = document.querySelector('#geocoder .suggestions-wrapper');
+if (suggestionsElem) {
+  suggestionsElem.addEventListener('touchstart', (e) => {
+    const geocodeElem = document.getElementById('geocoder'); // eslint-disable-line
+    geocodeElem.classList.remove('expand');
+  });
 }
 
 const drawCircleElement = document.querySelector('.btn-draw-circle');

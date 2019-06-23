@@ -95,6 +95,23 @@ html, body {
 
 #geocoder {
   width: 100% !important;
+  @include border-radius(10px, 10px !important);
+  .mapboxgl-ctrl-geocoder {
+    @include border-radius(10px, 10px !important);    
+  }
+
+  &.expand {
+    position: relative !important;
+    left: -12px !important;
+    width: 110%;
+    .mapboxgl-ctrl-geocoder--input {
+      width: 110% !important;
+      @include border-radius(10px, 10px !important);
+    }
+    .suggestions {
+      width: 110% !important;
+    }
+  }
 }
 
 .steps {
