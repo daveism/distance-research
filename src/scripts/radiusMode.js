@@ -218,6 +218,20 @@ RadiusMode.onStop = function onStop(state) {
     googleAnalytics.setEvent('data', 'distancekm-presubmit', feet);
     googleAnalytics.setEvent('data', 'distancefeet-presubmit', feet);
 
+    const submitButtonElem = document.getElementById('submit-button');
+    if (submitButtonElem) {
+      submitButtonElem.classList.remove('disabled');
+      submitButtonElem.classList.remove('disabled');
+
+      document.getElementById('step-2').classList.add('step-not-vis');
+      document.getElementById('step-3').classList.remove('step-not-vis');
+    }
+
+    const circle2ButtonElem = document.getElementById('circle-button2');
+    if (circle2ButtonElem) {
+      circle2ButtonElem.classList.remove('disabled');
+    }
+
     // reconfigure the geojson line into a geojson point with a radius property
     const pointWithRadius = {
       type: 'Feature',

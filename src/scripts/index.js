@@ -172,22 +172,6 @@ function handleDrawButtonClick(e) {
   }
 
   drawControl.changeMode('draw_radius');
-
-  const submitButtonElem = document.getElementById('submit-button');
-  if (submitButtonElem) {
-    submitButtonElem.classList.remove('disabled');
-    submitButtonElem.classList.remove('disabled');
-
-    document.getElementById('step-2').classList.add('step-not-vis');
-    document.getElementById('step-3').classList.remove('step-not-vis');
-  }
-
-  const circle2ButtonElem = document.getElementById('circle-button2');
-  if (circle2ButtonElem) {
-    circle2ButtonElem.classList.remove('disabled');
-  }
-
-
   return null;
 }
 
