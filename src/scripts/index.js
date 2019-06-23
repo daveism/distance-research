@@ -182,7 +182,7 @@ function handleDrawButtonClick(e) {
     document.getElementById('step-3').classList.remove('step-not-vis');
   }
 
-  const circle2ButtonElem = document.getElementById('circle-button2')
+  const circle2ButtonElem = document.getElementById('circle-button2');
   if (circle2ButtonElem) {
     circle2ButtonElem.classList.remove('disabled');
   }
@@ -285,15 +285,17 @@ if (reDrawCircleElement) {
 }
 
 function handleStepNavClick(e) {
-  document.getElementById('step-1').classList.remove('step-not-vis');
-  document.getElementById('step-2').classList.remove('step-not-vis');
-  document.getElementById('step-3').classList.remove('step-not-vis');
-  document.getElementById('step-1').classList.add('step-not-vis');
-  document.getElementById('step-2').classList.add('step-not-vis');
-  document.getElementById('step-3').classList.add('step-not-vis');
-  const value = e.target.getAttributeNode("val").value;
-  document.getElementById(`${value}`).classList.remove('step-not-vis');
-  console.log(value)
+  const valNode = e.target.getAttributeNode('val'); // eslint-disable-line
+  if (valNode) {
+    document.getElementById('step-1').classList.remove('step-not-vis');
+    document.getElementById('step-2').classList.remove('step-not-vis');
+    document.getElementById('step-3').classList.remove('step-not-vis');
+    document.getElementById('step-1').classList.add('step-not-vis');
+    document.getElementById('step-2').classList.add('step-not-vis');
+    document.getElementById('step-3').classList.add('step-not-vis');
+    const value = e.target.getAttributeNode('val').value; // eslint-disable-line
+    document.getElementById(`${value}`).classList.remove('step-not-vis');
+  }
 }
 
 const stepNav1Elem = document.getElementById('step-nav-1');
