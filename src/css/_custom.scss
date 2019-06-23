@@ -88,10 +88,19 @@
   }
 }
 
+.mapboxgl-ctrl-top-left {
+  z-index: 0 !important;
+}
+
 .suggestions-wrapper {
   cursor: pointer;
   background-color: $body-color !important;
   color: $body-background-color !important;
+  z-index: 999 !important;
+}
+
+.suggestions {
+  z-index: 999 !important;
 }
 
 .mapbox-gl-draw_ctrl-draw-btn {

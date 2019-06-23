@@ -25,7 +25,8 @@
   <div class="w-100 h-100 d-flex justify-content-center" id="main-content">
     <div class="row w-100 h-100 px-3">
 
-      <div class="col-12 col-sm-12 col-md-5 col-xl-5 start-height-actions order-lg-1 order-md-1 order-sm-2 order-2" id="map-action-holder">
+      <div class="col-12 col-sm-12 col-md-5 col-xl-5 start-height-actions" id="map-action-holder">
+        <!-- order-lg-1 order-md-1 order-sm-2 order-2 -->
 
         <div id="study-agreement-all" class="py-0 h-80">
           <div id="study-agreement-title" class="step-title">Study Participant Agreement</div>
@@ -47,7 +48,7 @@
               </div>
             </div>
           </div>
-          <div class="py-3">
+          <div id="aggree-disaggre-wrapper" class="py-3">
             <div id="study-agreement-sub" class="step-directions align-self-center py-2">Do you want to partipate?</div>
             <button id="aggree-button" type="button" class="btn btn-light btn-aggreement w-40 align-self-end mr-3" >
               <i class="fas fa-check"></i>
@@ -68,6 +69,11 @@
         <div id="study-progress" class="d-none">
           <div id="step-1" class="steps py-3" >
             <div id="step1-title" class="step-title">Step 1</div>
+            <div id="step-nav-1" class="row step-nav w-100 flex-row flex-nowrap" >
+              <div id="step1-title" val="step-1" class="step-title-nav active">Step 1</div>
+              <div id="step1-title" val="step-2" class="step-title-nav">Step 2</div>
+              <div id="step1-title" val="step-3" class="step-title-nav">Step 3</div>
+            </div>
             <div id="step1-directions" class="step-directions">Search for a place that you want to find about crime</div>
             <div class="py-3 align-self-end step-button" >
               <div id='geocoder' class='geocoder'></div>
@@ -76,6 +82,11 @@
 
           <div id="step-2" class="py-3 step-not-vis" >
             <div id="step2-title" class="step-title disabled">Step 2</div>
+            <div id="step-nav-2" class="row step-nav w-100 flex-row flex-nowrap" >
+              <div id="step2-title" val="step-1" class="step-title-nav">Step 1</div>
+              <div id="step2-title" val="step-2" class="step-title-nav active">Step 2</div>
+              <div id="step2-title" val="step-3" class="step-title-nav">Step 3</div>
+            </div>
             <div id="step2-directions" class="step-directions disabled">Draw a circle that represents 1 mile from the location</div>
             <div id="step2-minor-directions" class="step-minor-directions disabled">
               Click on the draw a circle button. Then click on the map to define the center of the circle. When the circle best represents the distance, click on the map a again.
@@ -90,6 +101,11 @@
 
           <div id="step-3" class="py-3 step-not-vis" >
             <div id="step3-title" class="step-title disabled">Step 3</div>
+            <div id="step-nav-3" class="row step-nav w-100 flex-row flex-nowrap" >
+              <div id="step3-title" val="step-1" class="step-title-nav">Step 1</div>
+              <div id="step3-title" val="step-2" class="step-title-nav">Step 2</div>
+              <div id="step3-title" val="step-3" class="step-title-nav active">Step 3</div>
+            </div>
             <div id="step3-directions" class="step-directions disabled">Submit the current circle as your answer, or redraw the circle by clicking on the draw circle button.</div>
           <div class="py-3 align-self-end step-button" >
             <button id="submit-button" type="button" class="btn btn-light btn-draw-circle disabled w-100 align-self-end data-toggle="tooltip" data-html="true" title="Please search for location and draw a circle first!"">
@@ -111,7 +127,8 @@
 
       </div>
 
-      <div class="col-12 col-md-7 col-xl-7 start-height-map order-lg-2 order-md-2 order-sm-1 order-1" id="map-holder">
+      <div class="col-12 col-md-7 col-xl-7 start-height-map" id="map-holder">
+        <!-- order-lg-2 order-md-2 order-sm-1 order-1 -->
         <div id="map" ref="mapContainer" class="map"></div>
       </div>
     </div>

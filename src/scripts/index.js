@@ -147,14 +147,14 @@ function handleDrawButtonClick(e) {
   const circleButtonElem = document.getElementById('circle-button');
   if (circleButtonElem) {
     if (circleButtonElem.classList.contains('disabled')) {
-      $('#circle-button').tooltip({ trigger: 'hover focus' });
-      $('#circle-button').tooltip('show');
+      $('#circle-button2').tooltip({ trigger: 'hover focus' });
+      $('#circle-button2').tooltip('show');
       return null;
     } else { // eslint-disable-line
-      $('#circle-button').tooltip({ trigger: 'manual' });
-      $('#circle-button').tooltip('hide');
-      $('#circle-button').tooltip('disable');
-      $('#circle-button').tooltip('dispose');
+      $('#circle-button2').tooltip({ trigger: 'manual' });
+      $('#circle-button2').tooltip('hide');
+      $('#circle-button2').tooltip('disable');
+      $('#circle-button2').tooltip('dispose');
     }
   }
 
@@ -181,7 +181,7 @@ function handleDrawButtonClick(e) {
     document.getElementById('step-2').classList.add('step-not-vis');
     document.getElementById('step-3').classList.remove('step-not-vis');
   }
-  
+
   const circle2ButtonElem = document.getElementById('circle-button2')
   if (circle2ButtonElem) {
     circle2ButtonElem.classList.remove('disabled');
@@ -266,7 +266,6 @@ geocoder.on('result', (e) => {
 
     document.getElementById('step-1').classList.add('step-not-vis');
     document.getElementById('step-2').classList.remove('step-not-vis');
-
   }
 });
 
@@ -285,6 +284,32 @@ if (reDrawCircleElement) {
   reDrawCircleElement.addEventListener('click', handleDrawButtonClick);
 }
 
+function handleStepNavClick(e) {
+  document.getElementById('step-1').classList.remove('step-not-vis');
+  document.getElementById('step-2').classList.remove('step-not-vis');
+  document.getElementById('step-3').classList.remove('step-not-vis');
+  document.getElementById('step-1').classList.add('step-not-vis');
+  document.getElementById('step-2').classList.add('step-not-vis');
+  document.getElementById('step-3').classList.add('step-not-vis');
+  const value = e.target.getAttributeNode("val").value;
+  document.getElementById(`${value}`).classList.remove('step-not-vis');
+  console.log(value)
+}
+
+const stepNav1Elem = document.getElementById('step-nav-1');
+if (stepNav1Elem) {
+  stepNav1Elem.addEventListener('click', handleStepNavClick);
+}
+
+const stepNav2Elem = document.getElementById('step-nav-2');
+if (stepNav2Elem) {
+  stepNav2Elem.addEventListener('click', handleStepNavClick);
+}
+
+const stepNav3Elem = document.getElementById('step-nav-3');
+if (stepNav3Elem) {
+  stepNav3Elem.addEventListener('click', handleStepNavClick);
+}
 
 function handleSubmitButtonClick(e) {
   const submitButtonElem = document.getElementById('submit-button');

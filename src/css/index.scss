@@ -49,14 +49,14 @@ html, body {
 
 .start-height-actions {
   @media only screen and (max-width: 768px) {
-    height: 70% !important;
-    max-height: 70% !important;
+    height: 60% !important;
+    max-height: 60% !important;
   }
 }
 
 .start-height-map {
   @media only screen and (max-width: 768px) {
-    height: 30% !important;
+    height: 35% !important;
   }
 }
 
@@ -68,7 +68,7 @@ html, body {
 
 .step-height-map {
   @media only screen and (max-width: 768px) {
-    height: 70% !important;
+    height: 65% !important;
   }
 }
 
@@ -88,20 +88,44 @@ html, body {
 #map-holder {
   @media only screen and (max-width: 768px) {
     margin-top: 12px !important;
+    padding-bottom: 12px !important;
   }
 }
 .steps {
   padding-top: 0px !important;
 }
 
+
 .step-title {
   font-size: 24px;
   @media only screen and (max-width: 768px) {
+    font-size: 22px;
+    display: none !important;
+  }
+  @media only screen and (max-width: 321px) {
     font-size: 18px;
   }
   font-weight: 700;
   &.disabled {
     color: darken($body-color, 20) !important;
+  }
+}
+
+#study-dissaggree-title, #study-complete-title, #study-agreement-title {
+  &.step-title {
+    display: flex !important;
+  }
+}
+
+#study-agreement-sub {
+  @media only screen and (max-width: 321px) {
+    padding-top: 0px !important;
+  }
+}
+
+#aggree-disaggre-wrapper {
+  @media only screen and (max-width: 768px) {
+    padding-bottom: 0px !important;
   }
 }
 
@@ -136,6 +160,31 @@ html, body {
   }
 }
 
+.step-nav {
+  display: none !important;
+  @media only screen and (max-width: 768px) {
+    display: flex !important;
+    justify-content: space-around;
+    padding-bottom: 6px !important;
+    color: darken($body-color, 25) !important;
+    .active {
+      font-weight: 800 !important;
+      border-bottom: 2px solid $body-color;
+      color: $body-color !important;
+
+    }
+  }
+}
+
+.step-title-nav {
+  display: none !important;
+  @media only screen and (max-width: 768px) {
+    display: flex !important;
+    font-size: 22px;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+}
 #circle-button2 {
   display: none !important;
   background-color: lighten($body-background-color, 12) !important;
@@ -143,6 +192,7 @@ html, body {
   color: $body-color !important;
   @media only screen and (max-width: 768px) {
     display: block !important;
+    text-align: center !important;
   }
 }
 
