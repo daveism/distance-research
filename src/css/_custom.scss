@@ -168,3 +168,31 @@
     height: 75% !important;
   }
 }
+
+.pb-3, .py-3 {
+  @media only screen and (max-width: 768px) {
+    padding-bottom: .25rem !important;
+  }
+}
+
+.pt-3, .py-3{
+  @media only screen and (max-width: 768px) {
+    padding-top: .25rem !important;
+  }
+}
+
+.mapboxgl-ctrl-geocoder--icon-search {
+  @media only screen and (max-width: 768px) {
+    @media only screen and (max-height: 361px) {
+      top: 7px !important;
+    }
+  }
+}
+
+.mapboxgl-ctrl-geocoder--button {
+  @media only screen and (max-width: 768px) {
+    @media only screen and (max-height: 361px) {
+      top: 0px !important;
+    }
+  }
+}

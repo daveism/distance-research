@@ -258,6 +258,7 @@ if (geocodeElem) {
   geocodeElem.appendChild(geocoder.onAdd(map));
 
   geocodeElem.addEventListener('touchstart', (e) => {
+    e.preventDefault();
     geocodeElem.classList.remove('expand');
     geocodeElem.classList.add('expand');
   });
@@ -284,6 +285,11 @@ if (reDrawCircleElement) {
 function handleStepNavClick(e) {
   const valNode = e.target.getAttributeNode('val'); // eslint-disable-line
   if (valNode) {
+    const geocodeElem = document.getElementById('geocoder'); // eslint-disable-line
+    if (geocodeElem) {
+      geocodeElem.classList.remove('expand');
+    }
+
     document.getElementById('step-1').classList.remove('step-not-vis');
     document.getElementById('step-2').classList.remove('step-not-vis');
     document.getElementById('step-3').classList.remove('step-not-vis');
@@ -298,6 +304,16 @@ function handleStepNavClick(e) {
 const stepNav1Elem = document.getElementById('step-nav-1');
 if (stepNav1Elem) {
   stepNav1Elem.addEventListener('click', handleStepNavClick);
+}
+
+const mainContentElem = document.getElementById('main-content'); // eslint-disable-line
+if (mainContentElem) {
+  mainContentElem.addEventListener('click', (e) => {
+    const geocodeElem = document.getElementById('geocoder'); // eslint-disable-line
+    if (geocodeElem) {
+      geocodeElem.classList.remove('expand');
+    }
+  });
 }
 
 const stepNav2Elem = document.getElementById('step-nav-2');
