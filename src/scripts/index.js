@@ -372,7 +372,7 @@ if (submitButtonElem) {
 const directionsOne = [
   'Search for a location you care about.',
   'Search for a location to find about crime.',
-  'Search for a location to find about a pizza place.'
+  'Search for a location to find about the closest pizza place.'
 ];
 
 const minOne = 0;
@@ -387,9 +387,9 @@ if (stepDirections1) {
 googleAnalytics.setEvent('data', 'step1text', directionsOne[messageIndexOne]);
 
 const directionsTwo = [
-  'Draw a circle that represents 1 mile from the location.',
-  'Draw a circle that represents a 5 minute <strong>DRIVE</strong>.',
-  'Draw a circle that represents a 5 minute <strong>WALK</strong>.'
+  'Draw a circle that represents 1 mile.',
+  'Draw a circle that represents a 5-minute <strong>DRIVE</strong>.',
+  'Draw a circle that represents a 5-minute <strong>WALK</strong>.'
 ];
 
 const minTwo = 0;
