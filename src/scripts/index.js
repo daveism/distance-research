@@ -26,13 +26,13 @@ function isMobileDevice() {
 
 const urlString = window.location.href;
 const url = new URL(urlString);
-const userType = url.searchParams.get('userType');
+const campaign = url.searchParams.get('camp');
 
 // ga event action, category, label
 googleAnalytics.setEvent('data', 'study started', 'true');
 
 // ga event action, category, label
-googleAnalytics.setEvent('data', 'userType', userType);
+googleAnalytics.setEvent('data', 'campaign', campaign);
 
 // ga event action, category, label
 googleAnalytics.setEvent('data', 'mobile', isMobileDevice());
@@ -203,9 +203,24 @@ if (studyAgrreed) {
 // hide study
 if (studyCompleted) { // || studyAgrreed
   handleAgreeClick();
+
+  const distancekm = store.getStateItem('distancekm');
+  const distancemeters = store.getStateItem('distancemeters');
+  const distancefeet = store.getStateItem('distancefeet');
+  const distancemiles = store.getStateItem('distancemiles');
+  const studydistancequestion = store.getStateItem('studydistancequestion');
+
+  document.getElementById('study-complete-question').innerHTML = `${studydistancequestion}`;
+  document.getElementById('study-complete-miles').innerHTML = `${distancemiles.toFixed(2)} miles or`;
+  document.getElementById('study-complete-feet').innerHTML = `${distancefeet.toFixed(2)} feet or`;
+  document.getElementById('study-complete-km').innerHTML = `${distancekm.toFixed(2)} kilometers or`;
+  document.getElementById('study-complete-meters').innerHTML = `${distancemeters.toFixed(2)} meters.`;
+
   document.getElementById('study-complete').classList.remove('d-none');
   document.getElementById('study-progress').remove();
   document.getElementById('map-holder').remove();
+  document.getElementById('study-agreement-all').remove();
+  document.getElementById('map-action-holder').className ='col-12'; // eslint-disable-line
 } else {
   // document.getElementById('study-progress').classList.remove('d-none');
   store.setStateItem('studycompleted', false);
@@ -345,17 +360,31 @@ function handleSubmitButtonClick(e) {
     const circle = store.getStateItem('circle');
     const line = store.getStateItem('line');
     const distancekm = store.getStateItem('distancekm');
+    const distancemeters = store.getStateItem('distancemeters');
     const distancefeet = store.getStateItem('distancefeet');
+    const distancemiles = store.getStateItem('distancemiles');
+    const studydistancequestion = store.getStateItem('studydistancequestion');
 
     // ga event action, category, label
     googleAnalytics.setEvent('data', 'circle-submitted', circle);
     googleAnalytics.setEvent('data', 'line-submitted', line);
     googleAnalytics.setEvent('data', 'distancekm-submitted', distancekm);
     googleAnalytics.setEvent('data', 'distancefeet-submitted', distancefeet);
+    googleAnalytics.setEvent('data', 'distancemeters-submitted', distancemeters);
+    googleAnalytics.setEvent('data', 'distancemiles-submitted', distancemiles);
+
+    document.getElementById('study-complete-question').innerHTML = `${studydistancequestion}`;
+    document.getElementById('study-complete-miles').innerHTML = `${distancemiles.toFixed(2)} miles or`;
+    document.getElementById('study-complete-feet').innerHTML = `${distancefeet.toFixed(2)} feet or`;
+    document.getElementById('study-complete-km').innerHTML = `${distancekm.toFixed(2)} kilometers or`;
+    document.getElementById('study-complete-meters').innerHTML = `${distancemeters.toFixed(2)} meters.`;
 
     // end study
     document.getElementById('study-complete').classList.remove('d-none');
     document.getElementById('study-progress').remove();
+    document.getElementById('map-holder').remove();
+    document.getElementById('study-agreement-all').remove();
+    document.getElementById('map-action-holder').className ='col-12'; // eslint-disable-line
     store.setStateItem('studycompleted', true);
 
     // ga event action, category, label
@@ -402,6 +431,7 @@ if (stepDirections2) {
 
 // ga event action, category, label
 googleAnalytics.setEvent('data', 'step2text', directionsTwo[messageIndexTwo]);
+store.setStateItem('studydistancequestion', directionsTwo[messageIndexTwo]);
 
 const aggreeButtonElement = document.getElementById('aggree-button');
 if (aggreeButtonElement) {

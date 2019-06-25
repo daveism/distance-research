@@ -210,13 +210,17 @@ RadiusMode.onStop = function onStop(state) {
     store.setStateItem('circle', JSON.stringify(circleGeoJSON));
     store.setStateItem('line', JSON.stringify(lineGeoJson));
     store.setStateItem('distancekm', distance);
+    store.setStateItem('distancemeters', (distance * 1000));
     store.setStateItem('distancefeet', feet);
+    store.setStateItem('distancemiles', feet / 5280);
 
     // ga event action, category, label
     googleAnalytics.setEvent('data', 'circle-presubmit', JSON.stringify(circleGeoJSON));
     googleAnalytics.setEvent('data', 'line-presubmit', JSON.stringify(lineGeoJson));
     googleAnalytics.setEvent('data', 'distancekm-presubmit', distance);
+    googleAnalytics.setEvent('data', 'distancemeters-presubmit', (distance * 1000));
     googleAnalytics.setEvent('data', 'distancefeet-presubmit', feet);
+    googleAnalytics.setEvent('data', 'distancemiles-presubmit', feet / 5280);
     const innerWidth = window.innerWidth; // eslint-disable-line
     const innerHeight = window.innerHeight; // eslint-disable-line
     const availWidth = window.screen.availWidth; // eslint-disable-line
