@@ -26,7 +26,7 @@ function isMobileDevice() {
 
 const urlString = window.location.href;
 const url = new URL(urlString);
-const campaign = url.searchParams.get('camp');
+const campaign = url.searchParams.get('campaign');
 
 // ga event action, category, label
 googleAnalytics.setEvent('data', 'study started', 'true');
