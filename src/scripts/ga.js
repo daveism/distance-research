@@ -9,7 +9,7 @@ export class GoogleAnalytics {
   }
 
   setEvent(action = '', category = '', label = '', value = 0) {
-    const uuid = store.getStateItem('uuid');
+    const uuid = store.getStateItem('uuid').toString();
     const date = new Date().toISOString();
     const data = label;
 

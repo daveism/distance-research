@@ -13,6 +13,9 @@ import { GoogleAnalytics } from './ga';
 const store = new Store({});
 const googleAnalytics = new GoogleAnalytics();
 
+if (!checkValidObject(store.getStateItem('uuid'))) {
+  store.setStateItem('uuid', uuid().toString());
+}
 // Kicks off the process of finding <i> tags and replacing with <svg>
 // addes support for fontawesome
 library.add(fas, far);
@@ -224,10 +227,6 @@ if (studyCompleted) { // || studyAgrreed
 } else {
   // document.getElementById('study-progress').classList.remove('d-none');
   store.setStateItem('studycompleted', false);
-}
-
-if (!checkValidObject(store.getStateItem('uuid'))) {
-  store.setStateItem('uuid', uuid());
 }
 
 geocoder.on('result', (e) => {
