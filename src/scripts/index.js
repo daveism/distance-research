@@ -445,6 +445,6 @@ if (dissaggreeButtonElement) {
 const step2MinorDirectionsElement = document.getElementById('step2-minor-directions');
 if (step2MinorDirectionsElement) {
   if (isMobileDevice()) {
-    step2MinorDirectionsElement.innerHTML = 'Click on the map, then drag your finger across the map until the circle best represents the distance.';
+    step2MinorDirectionsElement.innerHTML = 'Click on the map, then drag your finger across the map until the radius of the circle best represents the distance.';
   }
 }
