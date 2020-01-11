@@ -88,6 +88,7 @@ const geocoder = new MapboxGeocoder({
 });
 
 map.on('zoomend', () => {
+  console.log('searchzoom', map.getZoom())
   if (map.getZoom() > 10) {
     const circleButtonElem = document.getElementById('circle-button');
     if (circleButtonElem.classList.contains('disabled')) {
@@ -252,7 +253,7 @@ geocoder.on('result', (e) => {
 
   // ga event action, category, label
   googleAnalytics.setEvent('data', 'searchzoom', zm);
-
+  console.log('searchzoom', zm)
 
   const circleButtonElem = document.getElementById('circle-button');
   if (circleButtonElem.classList.contains('disabled')) {

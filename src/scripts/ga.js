@@ -29,8 +29,8 @@ export class GoogleAnalytics {
       date
     };
 
-    const dataAPIURL = new URL(datapi);
-    dataAPIURL.search = new URLSearchParams(jsondata);
-    fetch(dataAPIURL);
+    // const dataAPIURL = new URL(datapi);
+    // dataAPIURL.search = new URLSearchParams(jsondata);
+    // fetch(dataAPIURL);
   }
 }
